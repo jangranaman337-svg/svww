@@ -676,7 +676,7 @@
       <button onclick="toggleDeveloperPanel(false)" class="absolute top-4 right-4 p-2 text-luxury-400 hover:text-luxury-900" aria-label="Close Rules Dialog"><i data-lucide="x" class="w-6 h-6"></i></button>
       <div class="mb-6 border-b border-luxury-100 pb-4">
         <span class="text-xs uppercase tracking-widest text-luxury-300 font-bold block mb-1">Developer Sandbox</span>
-        <h3 class="font-serif text-2xl font-bold text-luxury-900">Firebase Operations Setup</h3>
+        <h3 class="font-serif text-2xl font-bold text-luxury-900">se Operations Setup</h3>
       </div>
  
       <div class="space-y-6 text-xs md:text-sm text-luxury-400 leading-relaxed max-h-[70vh] overflow-y-auto pr-2 no-scrollbar">
@@ -759,14 +759,7 @@ service firebase.storage {
        1. FIREBASE CONFIGURATION & INSTANCE CREATION
        ========================================================== */
     // LEAVE THESE VALUES EMPTY initially. System will automatically fall back to sandbox operations gracefully.
-    const firebaseConfig = {
-  apiKey: "AIzaSyBqrS93YGjubpQAUagXyIZIV4cNkW_S3KQ",
-  authDomain: "new-sw-48617.firebaseapp.com",
-  projectId: "new-sw-48617",
-  storageBucket: "new-sw-48617.firebasestorage.app",
-  messagingSenderId: "182557384587",
-  appId: "1:182557384587:web:dec1702c5212a587e7d98e"
-};
+   
  
     let app, auth, db, storage, appId;
     let isFirebaseConfigured = false;
