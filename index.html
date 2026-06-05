@@ -1,2698 +1,443 @@
-```html
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shri Vishwakarma Wood Works - Premium Furniture Showcase</title>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Premium Fonts (Playfair Display for Serifs, Plus Jakarta Sans for Sans-Serif) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
- 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            serif: ['"Playfair Display"', 'serif'],
-          },
-          colors: {
-            luxury: {
-              50: '#FDFBF7',
-              100: '#F4EFE6',
-              200: '#E6DCB8',
-              300: '#C5A880',
-              400: '#A38A5F',
-              800: '#2A2421',
-              900: '#1A1615',
-              accent: '#C5A880'
-            }
-          }
-        }
-      }
-    }
-  </script>
- 
-  <style>
-    /* Premium visual overrides & scroll bar hides */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    
-    /* Smooth transitions */
-    .fade-transition {
-      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-    }
-    
-    /* Skeleton Loader Shimmer */
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-    .skeleton {
-      background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite linear;
-    }
- 
-    /* Custom elegant glassmorphism */
-    .glassmorphism {
-      background: rgba(26, 22, 21, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    
-    .glass-light {
-      background: rgba(253, 251, 247, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
- 
-    /* Aspect ratios */
-    .aspect-card {
-      aspect-ratio: 4/3;
-    }
-  </style>
-</head>
-<body class="bg-luxury-50 text-luxury-900 font-sans antialiased overflow-x-hidden selection:bg-luxury-300 selection:text-white">
- 
- 
-  <!-- ==========================================
-       TOP NAVIGATION BAR
-       ========================================== -->
-  <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 glass-light border-b border-luxury-100 py-4 px-4 md:px-8">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <!-- Store Name & Logo -->
-      <a href="#home" class="flex flex-col">
-        <span class="font-serif text-lg md:text-xl font-bold tracking-wider uppercase text-luxury-900">S.V.W.W</span>
-        <span class="text-[9px] md:text-[11px] font-semibold tracking-[0.2em] uppercase text-luxury-400">Shri Vishwakarma Wood Works</span>
-      </a>
- 
-      <!-- Desktop Navigation Links -->
-      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
-        <a href="#home" class="hover:text-luxury-300 transition-colors">Home</a>
-        <a href="#categories" class="hover:text-luxury-300 transition-colors">Categories</a>
-        <a href="#designs" class="hover:text-luxury-300 transition-colors">Designs</a>
-        <a href="#inspirations" class="hover:text-luxury-300 transition-colors">Inspirations</a>
-        <a href="#feedback" class="hover:text-luxury-300 transition-colors">Feedback</a>
-        <a href="#contact" class="hover:text-luxury-300 transition-colors">Contact</a>
-        <button onclick="showAdminLogin()" class="text-xs bg-luxury-900 text-white px-4 py-2 rounded-full hover:bg-luxury-300 transition">
-  Admin
-</button>
-      </nav>
- 
-      <!-- Icons (Search, Pinned Counter, Login Shortcut) -->
-      <div class="flex items-center space-x-4">
-        <!-- Search Button trigger -->
-        <button onclick="toggleSearchModal(true)" class="p-2 text-luxury-900 hover:text-luxury-300 transition-colors relative" aria-label="Search">
-          <i data-lucide="search" class="w-5 h-5"></i>
-        </button>
- 
-        <!-- Pin Button view trigger -->
-        <button onclick="togglePinSection(true)" class="p-2 text-luxury-900 hover:text-luxury-300 transition-colors relative" aria-label="Pinned Designs">
-          <i data-lucide="pin" class="w-5 h-5 fill-transparent transition-all"></i>
-          <span id="pin-badge" class="absolute -top-1 -right-1 bg-luxury-300 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold hidden scale-90">0</span>
-        </button>
- 
-        <!-- Mobile Menu Trigger -->
-        <button id="mobile-menu-btn" class="md:hidden p-2 text-luxury-900" aria-label="Toggle Menu">
-          <i data-lucide="menu" class="w-6 h-6"></i>
-        </button>
-      </div>
-    </div>
-  </header>
- 
-  <!-- Mobile Menu Drawer Overlay -->
-  <div id="mobile-drawer" class="fixed inset-0 bg-luxury-900/60 z-50 transform translate-x-full transition-transform duration-300 md:hidden flex justify-end">
-    <div class="w-3/4 max-w-sm bg-luxury-50 h-full p-6 flex flex-col justify-between shadow-2xl">
-      <div>
-        <div class="flex items-center justify-between mb-8">
-          <span class="font-serif text-lg font-bold uppercase tracking-wider text-luxury-900">Navigation</span>
-          <button id="mobile-close-btn" class="p-2"><i data-lucide="x" class="w-6 h-6"></i></button>
-        </div>
-        <nav class="flex flex-col space-y-6 text-base font-medium tracking-wide">
-          <a href="#home" onclick="closeMobileDrawer()" class="hover:text-luxury-300 transition-colors flex items-center gap-3"><i data-lucide="home" class="w-4 h-4"></i> Home</a>
-          <a href="#categories" onclick="closeMobileDrawer()" class="hover:text-luxury-300 transition-colors flex items-center gap-3"><i data-lucide="layout" class="w-4 h-4"></i> Categories</a>
-          <a href="#designs" onclick="closeMobileDrawer()" class="hover:text-luxury-300 transition-colors flex items-center gap-3"><i data-lucide="image" class="w-4 h-4"></i> Our Designs</a>
-          <a href="#inspirations" onclick="closeMobileDrawer()" class="hover:text-luxury-300 transition-colors flex items-center gap-3"><i data-lucide="sparkles" class="w-4 h-4"></i> Inspirations</a>
-          <a href="#feedback" onclick="closeMobileDrawer()" class="hover:text-luxury-300 transition-colors flex items-center gap-3"><i data-lucide="message-square" class="w-4 h-4"></i> Feedback</a>
-          <a href="#contact" onclick="closeMobileDrawer()" class="hover:text-luxury-300 transition-colors flex items-center gap-3"><i data-lucide="phone" class="w-4 h-4"></i> Contact Us</a>
-        </nav>
-      </div>
-      <div class="border-t border-luxury-100 pt-6">
-        <span class="text-xs text-luxury-400 block mb-2">Exclusive Woodworks & Furnitures</span>
-        <button onclick="showAdminLogin()" class="text-xs text-luxury-300 hover:underline">Admin Login Panel</button>
-      </div>
-    </div>
-  </div>
- 
-  <div class="h-16"></div> <!-- Spacer for Fixed Header -->
- 
- 
-  <!-- ==========================================
-       HERO BANNER (SLIDER)
-       ========================================== -->
-  <section id="home" class="relative overflow-hidden bg-luxury-900 text-white" style="height: 60vh; min-height: 400px;">
-    <!-- Slides Container -->
-    <div id="hero-slider-container" class="relative w-full h-full">
-      <!-- Slides will be injected dynamically -->
-      <div class="absolute inset-0 flex items-center justify-center text-center px-4 bg-luxury-900/40 z-10 select-none pointer-events-none">
-        <div class="max-w-2xl">
-          <span class="text-xs uppercase tracking-[0.3em] text-luxury-300 font-semibold mb-3 block">Est. 1995</span>
-          <h1 class="font-serif text-3xl md:text-5xl font-semibold leading-tight tracking-wide mb-4">
-            Shri Vishwakarma <span class="italic font-normal">Wood Works</span>
-          </h1>
-          <p class="text-xs md:text-sm text-luxury-100 tracking-wide max-w-lg mx-auto mb-8 font-light">
-            Crafting luxury bespoke wooden masterpieces, customized furniture systems, modular kitchens, and timeless structural decors tailored specifically to your dreams.
-          </p>
-          <div class="flex items-center justify-center gap-4 pointer-events-auto">
-            <a href="#designs" class="px-6 py-3 bg-luxury-300 text-luxury-900 font-semibold text-xs uppercase tracking-widest rounded-full hover:bg-white hover:text-luxury-900 transition-all duration-300">View Designs</a>
-            <a href="#contact" class="px-6 py-3 border border-white/40 bg-transparent text-white font-semibold text-xs uppercase tracking-widest rounded-full hover:bg-white hover:text-luxury-900 hover:border-white transition-all duration-300">Contact Us</a>
-          </div>
-        </div>
-      </div>
-    </div>
- 
-    <!-- Swipe Indicator Dots & Navigation -->
-    <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-2 z-20">
-      <!-- Dots injected dynamically -->
-    </div>
-  </section>
- 
-  <!-- ==========================================
-       CATEGORIES SECTION (MULTI-SELECT)
-       ========================================== -->
-  <section id="categories" class="py-12 px-4 md:px-8 border-b border-luxury-100 max-w-7xl mx-auto">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-      <div>
-        <span class="text-xs uppercase tracking-widest text-luxury-400 font-semibold block mb-2">Explore Options</span>
-        <h2 class="font-serif text-2xl md:text-3xl font-bold text-luxury-900">Custom Categories</h2>
-      </div>
-      <p class="text-xs md:text-sm text-luxury-400 max-w-md font-light">
-        Tap multiple categories to filter and discover combined layouts (e.g. Bed & Wardrobe configurations).
-      </p>
-    </div>
- 
-    <!-- Horizontal scroll categories container -->
-    <div id="category-chips-container" class="flex overflow-x-auto gap-3 pb-4 no-scrollbar -mx-4 px-4 md:mx-0 md:px-0 select-none">
-      <!-- Injected dynamically via Javascript -->
-    </div>
-  </section>
- 
-  <!-- ==========================================
-       MAIN DESIGNS PORTFOLIO SECTION (WITH TABS)
-       ========================================== -->
-  <section id="designs" class="py-16 px-4 md:px-8 max-w-7xl mx-auto">
-    <!-- Section Header & Filter Tabs -->
-    <div class="flex flex-col md:flex-row items-center justify-between border-b border-luxury-100 pb-6 mb-8 gap-6">
-      <div class="text-center md:text-left">
-        <span class="text-xs uppercase tracking-widest text-luxury-400 font-semibold block mb-2">Our Masterpieces</span>
-        <h2 class="font-serif text-2xl md:text-3xl font-bold text-luxury-900">Exquisite Furniture Library</h2>
-      </div>
- 
-      <!-- Tab Buttons -->
-      <div class="flex border-b border-luxury-100 p-1 bg-luxury-100 rounded-full text-xs font-semibold uppercase tracking-wider">
-        <button onclick="setActiveTab('our-designs')" id="tab-our-designs" class="px-5 py-2.5 rounded-full text-luxury-900 bg-white transition-all shadow-sm">Our Works</button>
-        <button onclick="setActiveTab('inspirations')" id="tab-inspirations" class="px-5 py-2.5 rounded-full text-luxury-400 hover:text-luxury-900 transition-all">Inspirations</button>
-        <button onclick="setActiveTab('all')" id="tab-all" class="px-5 py-2.5 rounded-full text-luxury-400 hover:text-luxury-900 transition-all font-bold">All Designs</button>
-      </div>
-    </div>
- 
-    <!-- Live Design Grid with responsive layouts -->
-    <div id="design-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      <!-- Rendered dynamically (Cards contain Crop thumbnail, Title, Category, Like, Pin, Share) -->
-    </div>
- 
-    <!-- View All Button/Loading Skeleton Area -->
-    <div class="text-center mt-12">
-      <button id="view-all-btn" onclick="toggleViewAll()" class="px-8 py-3.5 border border-luxury-300 text-luxury-900 font-semibold text-xs uppercase tracking-widest rounded-full hover:bg-luxury-900 hover:text-white transition-all duration-300">
-        View All Collections
-      </button>
-    </div>
-  </section>
- 
-  <!-- ==========================================
-       MOST LIKED / TRENDING SECTION (CAROUSEL)
-       ========================================== -->
-  <section class="bg-luxury-100 py-16 px-4 md:px-8 border-y border-luxury-200">
-    <div class="max-w-7xl mx-auto">
-      <div class="flex items-center justify-between mb-8">
-        <div>
-          <span class="text-xs uppercase tracking-widest text-luxury-400 font-semibold block mb-2">Most Popular</span>
-          <h2 class="font-serif text-2xl md:text-3xl font-bold text-luxury-900">Trending Creations</h2>
-        </div>
-        <!-- Navigation Buttons -->
-        <div class="flex items-center space-x-2">
-          <button onclick="scrollTrending(-1)" class="w-10 h-10 rounded-full border border-luxury-300 flex items-center justify-center text-luxury-900 hover:bg-luxury-900 hover:text-white transition-colors" aria-label="Previous"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-          <button onclick="scrollTrending(1)" class="w-10 h-10 rounded-full border border-luxury-300 flex items-center justify-center text-luxury-900 hover:bg-luxury-900 hover:text-white transition-colors" aria-label="Next"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
-        </div>
-      </div>
- 
-      <!-- Carousel Track Container -->
-      <div id="trending-carousel-container" class="overflow-x-auto no-scrollbar scroll-smooth flex gap-6 pb-6 select-none cursor-grab active:cursor-grabbing">
-        <!-- Rendered dynamically -->
-      </div>
-    </div>
-  </section>
- 
-  <!-- ==========================================
-       CUSTOMER FEEDBACK / REVIEWS SECTION
-       ========================================== -->
-  <section id="feedback" class="py-16 px-4 md:px-8 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-      <!-- Form Area -->
-      <div class="lg:col-span-1 bg-white p-8 rounded-3xl border border-luxury-100 shadow-sm self-start">
-        <span class="text-xs uppercase tracking-widest text-luxury-300 font-bold block mb-2">Share Your Experience</span>
-        <h2 class="font-serif text-2xl font-bold text-luxury-900 mb-6">Customer Review</h2>
-        
-        <form id="feedback-form" onsubmit="handleFeedbackSubmit(event)" class="space-y-4">
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-luxury-400 mb-1" for="feedback-name">Your Name</label>
-            <input type="text" id="feedback-name" required class="w-full px-4 py-2.5 bg-luxury-50 border border-luxury-100 rounded-xl focus:outline-none focus:border-luxury-300 text-sm" placeholder="Enter full name">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-luxury-400 mb-1" for="feedback-phone">Phone Number (Optional)</label>
-            <input type="tel" id="feedback-phone" class="w-full px-4 py-2.5 bg-luxury-50 border border-luxury-100 rounded-xl focus:outline-none focus:border-luxury-300 text-sm" placeholder="Enter phone number">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-luxury-400 mb-1">Overall Rating</label>
-            <div class="flex items-center space-x-2 my-2">
-              <input type="hidden" id="feedback-rating" value="5">
-              <div id="star-rating-selector" class="flex items-center gap-1">
-                <!-- Interactive stars dynamically selected -->
-                <button type="button" onclick="setFeedbackRating(1)" class="p-1"><i data-lucide="star" class="w-6 h-6 text-yellow-500 fill-yellow-500"></i></button>
-                <button type="button" onclick="setFeedbackRating(2)" class="p-1"><i data-lucide="star" class="w-6 h-6 text-yellow-500 fill-yellow-500"></i></button>
-                <button type="button" onclick="setFeedbackRating(3)" class="p-1"><i data-lucide="star" class="w-6 h-6 text-yellow-500 fill-yellow-500"></i></button>
-                <button type="button" onclick="setFeedbackRating(4)" class="p-1"><i data-lucide="star" class="w-6 h-6 text-yellow-500 fill-yellow-500"></i></button>
-                <button type="button" onclick="setFeedbackRating(5)" class="p-1"><i data-lucide="star" class="w-6 h-6 text-yellow-500 fill-yellow-500"></i></button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-luxury-400 mb-1" for="feedback-comment">Comments & Suggestion</label>
-            <textarea id="feedback-comment" required rows="4" class="w-full px-4 py-2.5 bg-luxury-50 border border-luxury-100 rounded-xl focus:outline-none focus:border-luxury-300 text-sm" placeholder="Tell us what you liked or how we can improve..."></textarea>
-          </div>
-          <button type="submit" class="w-full py-3 bg-luxury-900 text-white font-semibold text-xs uppercase tracking-widest rounded-xl hover:bg-luxury-300 transition-colors">Submit Review</button>
-        </form>
-      </div>
- 
-      <!-- Feedbacks List Display Area -->
-      <div class="lg:col-span-2 space-y-6">
-        <div>
-          <span class="text-xs uppercase tracking-widest text-luxury-400 font-semibold block mb-2">Words of appreciation</span>
-          <h2 class="font-serif text-2xl md:text-3xl font-bold text-luxury-900">What Our Clients Say</h2>
-        </div>
- 
-        <div id="feedback-list-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-2 no-scrollbar">
-          <!-- Live list feedback + admin response dynamically loaded -->
-        </div>
-      </div>
-    </div>
-  </section>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CloudWave — Personal Music Player</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Google Fonts: Syne + DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    </head>
+    <body>
 
-   
-  <!-- ==========================================
-       RECENTLY VIEWED DESIGNS
-       ========================================== -->
-  <section id="recently-viewed-section" class="py-12 bg-white border-t border-luxury-100 max-w-7xl mx-auto px-4 md:px-8 hidden">
-    <div class="mb-6">
-      <span class="text-xs uppercase tracking-widest text-luxury-400 font-semibold block mb-1">Your History</span>
-      <h3 class="font-serif text-xl font-bold text-luxury-900">Recently Viewed</h3>
-    </div>
-    <div id="recently-viewed-list" class="flex overflow-x-auto gap-4 pb-4 no-scrollbar select-none">
-      <!-- Injected dynamically -->
-    </div>
-  </section>
- 
-  <!-- ==========================================
-       CONTACT & STORE DETAIL FOOTER
-       ========================================== -->
-  <footer id="contact" class="bg-luxury-900 text-luxury-100 pt-16 pb-8 border-t-2 border-luxury-300">
-    <div class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-      <!-- Main Address info -->
-      <div>
-        <h3 class="font-serif text-xl font-bold tracking-wider text-white uppercase mb-4">S.V.W.W</h3>
-        <p class="text-xs text-luxury-300 uppercase tracking-widest mb-6">Shri Vishwakarma Wood Works</p>
-        <p class="text-sm font-light text-luxury-100/80 leading-relaxed mb-4">
-          Over 25+ Years of professional engineering and master carpentry. Delivering premier designs across entire residential & corporate landscapes.
+    <!-- ═══════════════════════════════════════════
+        AUTH OVERLAY
+    ════════════════════════════════════════════ -->
+    <div id="auth-overlay" class="auth-overlay">
+        <div class="auth-card">
+        <div class="auth-logo">
+            <div class="auth-logo-icon">
+            <i data-lucide="radio"></i>
+            </div>
+            <span class="auth-logo-text">CloudWave</span>
+        </div>
+        <p class="auth-subtitle">Your personal music universe</p>
+
+        <!-- Tab Switcher -->
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Sign In</button>
+            <button class="auth-tab" data-tab="register">Create Account</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-form" class="auth-form active">
+            <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
+            </div>
+            <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+            </div>
+            <button id="login-btn" class="btn-primary">Sign In</button>
+        </div>
+
+        <!-- Register Form -->
+        <div id="register-form" class="auth-form">
+            <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" />
+            </div>
+            <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="reg-password" placeholder="Min. 6 characters" autocomplete="new-password" />
+            </div>
+            <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" id="reg-confirm" placeholder="Repeat password" autocomplete="new-password" />
+            </div>
+            <button id="register-btn" class="btn-primary">Create Account</button>
+        </div>
+
+        <!-- Guest note -->
+        <p class="auth-guest-note">
+            <i data-lucide="eye" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"></i>
+            Guests can browse and play — sign in to upload & manage.
         </p>
-        <div class="flex items-center space-x-3 text-luxury-300">
-          <a href="#" class="hover:text-white transition-colors" aria-label="Instagram"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-          <a id="footer-whatsapp" href="#" target="_blank" class="hover:text-white transition-colors" aria-label="WhatsApp"><i data-lucide="phone-call" class="w-5 h-5"></i></a>
+
+        <button id="guest-btn" class="btn-ghost">Continue as Guest</button>
+        <div id="auth-error" class="auth-error hidden"></div>
         </div>
-      </div>
- 
-      <!-- Quick Nav Links -->
-      <div>
-        <h4 class="text-xs uppercase tracking-widest text-white font-bold mb-4">Quick Links</h4>
-        <ul class="space-y-2.5 text-sm font-light">
-          <li><a href="#home" class="hover:text-luxury-300 transition-colors">Home Landing</a></li>
-          <li><a href="#categories" class="hover:text-luxury-300 transition-colors">Categories Filter</a></li>
-          <li><a href="#designs" class="hover:text-luxury-300 transition-colors">Our Showroom Works</a></li>
-          <li><a href="#feedback" class="hover:text-luxury-300 transition-colors">Customer Review Feedback</a></li>
-          <li><a href="#contact" class="hover:text-luxury-300 transition-colors font-semibold text-luxury-300">Quick Contact</a></li>
-        </ul>
-      </div>
- 
-      <!-- Dynamic Store Information -->
-      <div>
-        <h4 class="text-xs uppercase tracking-widest text-white font-bold mb-4">Showroom Address</h4>
-        <p class="text-sm font-light leading-relaxed text-luxury-100/80 mb-4">
-          Plot No. 12, Vishwakarma Industrial Estate,<br>
-          Near Main Highway Crossing, Sector 44,<br>
-          Noida, Uttar Pradesh - 201301, India
-        </p>
-        <a href="https://maps.google.com" target="_blank" class="text-xs uppercase tracking-widest font-semibold text-luxury-300 hover:underline flex items-center gap-1.5">
-          <i data-lucide="map-pin" class="w-4 h-4"></i> Get Directions
-        </a>
-      </div>
- 
-      <!-- Contact details & Invisible Admin route link -->
-      <div>
-        <h4 class="text-xs uppercase tracking-widest text-white font-bold mb-4">Direct Inquiry</h4>
-        <ul class="space-y-3 text-sm font-light text-luxury-100/80">
-          <li class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-luxury-300"></i> +91 98765 43210</li>
-          <li class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-luxury-300"></i> contact@svwoodworks.com</li>
-          <li class="flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4 text-luxury-300"></i> Mon - Sun: 9:00 AM - 8:30 PM</li>
-        </ul>
-        <!-- Discreet Access key to Auth Setup & Security rules panel -->
-        <div class="mt-8 border-t border-white/10 pt-4">
-          <button onclick="toggleDeveloperPanel(true)" class="text-[10px] text-white/30 hover:text-luxury-300 transition-colors tracking-widest uppercase font-mono block">Show Config Rules / setup</button>
-        </div>
-      </div>
     </div>
- 
-    <!-- Copyright and admin key hidden in copyright -->
-    <div class="border-t border-white/10 pt-8 max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between text-xs font-light text-luxury-100/40 gap-4">
-      <p>&copy; 2026 Shri Vishwakarma Wood Works. All rights reserved.</p>
-      <div class="flex items-center space-x-6">
-        <button onclick="showAdminLogin()" class="hover:text-luxury-300 transition-colors font-mono tracking-wider">SECURE PORTAL</button>
-      </div>
-    </div>
-  </footer>
- 
-  <!-- Floating Inquiry Button -->
-  <a id="floating-whatsapp-btn" href="#" target="_blank" class="fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all hover:scale-110 active:scale-95" aria-label="Inquire on WhatsApp">
-    <i data-lucide="message-circle" class="w-7 h-7 fill-white"></i>
-  </a>
- 
-  <!-- Back to Top Button -->
-  <button id="back-to-top-btn" onclick="scrollToTop()" class="fixed bottom-6 left-6 z-40 bg-luxury-900/80 hover:bg-luxury-900 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transform translate-y-24 opacity-0 transition-all duration-300" aria-label="Back to Top">
-    <i data-lucide="chevron-up" class="w-6 h-6"></i>
-  </button>
- 
- 
-  <!-- =========================================================================================================
-       MODALS & DETAILED OVERLAYS (PINNED BAR, SEARCH ENGINE, DETAILS DIALOG, CANVAS CROPPER, ADMIN AUTH, DEV MANUAL)
-       ========================================================================================================= -->
- 
-  <!-- A: SMART INTENT SEARCH MODAL -->
-  <div id="search-modal" class="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-luxury-900/60 hidden">
-    <div class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[80vh] flex flex-col">
-      <div class="flex items-center border-b border-luxury-100 p-4">
-        <i data-lucide="search" class="w-5 h-5 text-luxury-400 mr-3"></i>
-        <input type="text" id="smart-search-input" oninput="processIntentSearch(this.value)" class="w-full focus:outline-none text-base text-luxury-900 placeholder-luxury-400 font-light" placeholder="Search intent (e.g. 'luxury king size bed', 'modern modular kitchen')">
-        <button onclick="toggleSearchModal(false)" class="p-1 text-luxury-400 hover:text-luxury-900"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-      <!-- Hints and tags -->
-      <div class="px-6 py-3 bg-luxury-50 border-b border-luxury-100 flex flex-wrap gap-2 items-center text-xs text-luxury-400">
-        <span class="font-semibold">Try keywords:</span>
-        <button onclick="injectSearchText('premium beds')" class="bg-luxury-100 px-2.5 py-1 rounded-full hover:bg-luxury-300 hover:text-white transition-colors">Premium Beds</button>
-        <button onclick="injectSearchText('modern kitchen')" class="bg-luxury-100 px-2.5 py-1 rounded-full hover:bg-luxury-300 hover:text-white transition-colors">Modern Kitchen</button>
-        <button onclick="injectSearchText('cheap sofas')" class="bg-luxury-100 px-2.5 py-1 rounded-full hover:bg-luxury-300 hover:text-white transition-colors">Economical Sofas</button>
-      </div>
-      <!-- Results List -->
-      <div id="search-results-list" class="overflow-y-auto flex-1 p-6 space-y-4">
-        <p class="text-center text-sm text-luxury-400 py-8">Start typing keyword parameters to activate local Smart Match Engine...</p>
-      </div>
-    </div>
-  </div>
- 
- 
-  <!-- B: PINNED ITEMS & COMBINED INQUIRY DRAWER -->
-  <div id="pin-drawer" class="fixed inset-y-0 right-0 z-50 w-full sm:max-w-md bg-white shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 hidden">
-    <div class="p-6 border-b border-luxury-100 flex items-center justify-between">
-      <div class="flex items-center space-x-2">
-        <i data-lucide="pin" class="w-5 h-5 text-luxury-300 fill-luxury-300"></i>
-        <h3 class="font-serif text-lg font-bold text-luxury-900">Your Pinned Items</h3>
-      </div>
-      <button onclick="togglePinSection(false)" class="p-2 text-luxury-900 hover:text-luxury-300"><i data-lucide="x" class="w-6 h-6"></i></button>
-    </div>
- 
-    <!-- Pinned Designs Listing Scroll -->
-    <div id="pin-items-scroller" class="flex-1 overflow-y-auto p-6 space-y-4">
-      <!-- Injected dynamically -->
-    </div>
- 
-    <!-- Pinned Action Controls for Multi-Inquiry selection -->
-    <div class="p-6 border-t border-luxury-100 bg-luxury-50">
-      <div class="mb-4">
-        <div class="flex justify-between text-xs text-luxury-400 font-semibold mb-1">
-          <span>SELECTED DESIGNS FOR INQUIRY</span>
-          <span id="pin-selected-count">0 Selected</span>
+
+    <!-- ═══════════════════════════════════════════
+        MAIN APP WRAPPER
+    ════════════════════════════════════════════ -->
+    <div id="app" class="app hidden">
+
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+            <div class="sidebar-logo-icon"><i data-lucide="radio"></i></div>
+            <span>CloudWave</span>
+            </div>
+            <button class="sidebar-close-btn" id="sidebar-close-btn">
+            <i data-lucide="x"></i>
+            </button>
         </div>
-        <p class="text-[11px] text-luxury-400 leading-normal font-light">
-          Choose specific structures below. We will send an elegant compiled list with calculated estimates directly to our desk on WhatsApp/Email!
-        </p>
-      </div>
- 
-      <div class="grid grid-cols-2 gap-3">
-        <button onclick="triggerPinnedInquiry('whatsapp')" class="py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors">
-          <i data-lucide="message-circle" class="w-4 h-4 fill-white"></i> WhatsApp
-        </button>
-        <button onclick="triggerPinnedInquiry('email')" class="py-3 bg-luxury-900 hover:bg-luxury-300 text-white rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors">
-          <i data-lucide="mail" class="w-4 h-4"></i> Email List
-        </button>
-      </div>
-    </div>
-  </div>
- 
- 
-  <!-- C: EXQUISITE DETAILED VIEW POPUP/MODAL -->
-  <div id="design-details-modal" class="fixed inset-0 z-50 bg-luxury-900/90 hidden flex items-center justify-center overflow-y-auto p-0 sm:p-4">
-    <!-- Close button absolute -->
-    <button onclick="closeDetailsModal()" class="absolute top-4 right-4 z-50 bg-black/60 text-white p-3 rounded-full hover:bg-luxury-300 transition-colors" aria-label="Close Details Modal">
-      <i data-lucide="x" class="w-6 h-6"></i>
-    </button>
- 
-    <div class="w-full max-w-5xl bg-luxury-50 rounded-none sm:rounded-3xl shadow-2xl overflow-hidden min-h-screen sm:min-h-0 flex flex-col md:flex-row">
-      <!-- Media/Gallery container (Up to 5 images, Swipe support, Fullscreen zoom) -->
-      <div class="w-full md:w-3/5 bg-black relative flex flex-col justify-between" style="min-height: 350px;">
-        <!-- Track images wrapper -->
-        <div id="details-image-track" class="w-full h-full flex items-center justify-center overflow-hidden relative select-none">
-          <!-- Image elements will slide dynamically
- 
-  <!-- C: EXQUISITE DETAILED VIEW POPUP/MODAL -->
-  <div id="design-details-modal" class="fixed inset-0 z-50 bg-luxury-900/90 hidden flex items-center justify-center overflow-y-auto p-0 sm:p-4">
-    <!-- Close button absolute -->
-    <button onclick="closeDetailsModal()" class="absolute top-4 right-4 z-50 bg-black/60 text-white p-3 rounded-full hover:bg-luxury-300 transition-colors" aria-label="Close Details Modal">
-      <i data-lucide="x" class="w-6 h-6"></i>
-    </button>
- 
-    <div class="w-full max-w-5xl bg-luxury-50 rounded-none sm:rounded-3xl shadow-2xl overflow-hidden min-h-screen sm:min-h-0 flex flex-col md:flex-row">
-      <!-- Media/Gallery container (Up to 5 images, Swipe support, Fullscreen zoom) -->
-      <div class="w-full md:w-3/5 bg-black relative flex flex-col justify-between" style="min-height: 350px;">
-        <!-- Track images wrapper -->
-        <div id="details-image-track" class="w-full h-full flex items-center justify-center overflow-hidden relative select-none">
-          <!-- Image elements will slide dynamically -->
+
+        <nav class="sidebar-nav">
+            <button class="nav-item active" data-section="library">
+            <i data-lucide="music-2"></i><span>Library</span>
+            </button>
+            <button class="nav-item" data-section="favorites">
+            <i data-lucide="heart"></i><span>Favorites</span>
+            </button>
+            <button class="nav-item" data-section="playlists">
+            <i data-lucide="list-music"></i><span>Playlists</span>
+            </button>
+            <button class="nav-item" data-section="recent">
+            <i data-lucide="clock"></i><span>Recently Played</span>
+            </button>
+            <button class="nav-item auth-only hidden" data-section="upload">
+            <i data-lucide="upload-cloud"></i><span>Upload Music</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info" id="user-info">
+            <div class="user-avatar" id="user-avatar">
+                <i data-lucide="user"></i>
+            </div>
+            <div class="user-details">
+                <span class="user-email" id="user-email-display">Guest</span>
+            </div>
+            </div>
+            <button class="btn-icon" id="logout-btn" title="Sign out">
+            <i data-lucide="log-out"></i>
+            </button>
         </div>
- 
-        <!-- Left Right controls absolute overlay -->
-        <div class="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none">
-          <button onclick="navigateDetailsImage(-1)" id="details-nav-prev" class="pointer-events-auto w-10 h-10 rounded-full bg-black/40 text-white hover:bg-luxury-300 flex items-center justify-center transition-colors"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-          <button onclick="navigateDetailsImage(1)" id="details-nav-next" class="pointer-events-auto w-10 h-10 rounded-full bg-black/40 text-white hover:bg-luxury-300 flex items-center justify-center transition-colors"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
-        </div>
- 
-        <!-- Image slider index counters -->
-        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 bg-black/60 rounded-full text-[11px] text-white tracking-widest uppercase">
-          <span id="details-image-idx">1</span>/<span id="details-image-total">1</span>
-        </div>
-      </div>
- 
-      <!-- Specific product breakdown sidebar -->
-      <div class="w-full md:w-2/5 p-6 md:p-8 flex flex-col justify-between bg-white overflow-y-auto" style="max-height: 85vh;">
-        <div>
-          <!-- Tags and categories -->
-          <div class="flex items-center gap-2 mb-3">
-            <span id="details-card-type" class="px-2.5 py-1 bg-luxury-100 text-[10px] font-bold uppercase tracking-wider text-luxury-400 rounded-full">OUR WORK</span>
-            <span id="details-category" class="text-xs font-semibold text-luxury-300 uppercase tracking-widest">BEDS</span>
-          </div>
-          
-          <h3 id="details-title" class="font-serif text-2xl md:text-3xl font-bold text-luxury-900 mb-2">Grand Teakwood King Bed</h3>
-          
-          <div class="text-lg font-semibold text-luxury-400 tracking-wide mb-4" id="details-price">
-            Est. ₹85,000 - ₹1,20,000
-          </div>
- 
-          <!-- Description text block -->
-          <p id="details-desc" class="text-xs md:text-sm text-luxury-400 font-light leading-relaxed mb-6">
-            Handcrafted with solid plantation teakwood with precise state-of-the-art structural alignments. Perfect custom luxury padding and hidden drawers inside storage units.
-          </p>
- 
-          <!-- Specifications tags -->
-          <div class="mb-8 border-t border-b border-luxury-100 py-4">
-            <h4 class="text-xs uppercase tracking-widest text-luxury-400 font-bold mb-2">Details & Specifications</h4>
-            <div id="details-tags-list" class="flex flex-wrap gap-1.5">
-              <!-- Custom attributes injected -->
+        </aside>
+
+        <!-- Sidebar overlay (mobile) -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- ── MAIN CONTENT ── -->
+        <main class="main-content">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+            <button class="btn-icon menu-btn" id="menu-btn">
+            <i data-lucide="menu"></i>
+            </button>
+            <div class="search-bar">
+            <i data-lucide="search"></i>
+            <input type="text" id="search-input" placeholder="Search songs, artists, albums…" />
+            <button class="search-clear hidden" id="search-clear"><i data-lucide="x"></i></button>
             </div>
-          </div>
-        </div>
- 
-        <!-- Action tools inside popup drawer -->
-        <div class="space-y-4">
-          <button onclick="triggerInquiry('whatsapp')" class="w-full py-4.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all">
-            <i data-lucide="message-circle" class="w-5 h-5 fill-white"></i> Inquire on WhatsApp
-          </button>
-          <button onclick="triggerInquiry('email')" class="w-full py-4.5 border border-luxury-300 text-luxury-900 hover:bg-luxury-900 hover:text-white rounded-xl text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all">
-            <i data-lucide="mail" class="w-5 h-5"></i> Email Specification
-          </button>
- 
-          <!-- Similar designs row -->
-          <div class="mt-8 pt-6 border-t border-luxury-100">
-            <h4 class="text-xs uppercase tracking-widest text-luxury-400 font-bold mb-3">Similar Models</h4>
-            <div id="details-similar-track" class="flex gap-3 overflow-x-auto no-scrollbar pb-1">
-              <!-- Injected dynamically -->
+            <div class="topbar-actions">
+            <select id="sort-select" class="sort-select">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="az">A – Z</option>
+            </select>
+            <button class="btn-icon sign-in-topbar" id="sign-in-topbar-btn" title="Sign In">
+                <i data-lucide="log-in"></i>
+            </button>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
- 
- 
-  <!-- D: INTERACTIVE IMAGE CROPPER COMPONENT (FOR PREMIUM QUALITY CORRESPONDENCES) -->
-  <div id="cropper-modal" class="fixed inset-0 z-[60] bg-black/90 hidden flex flex-col justify-between p-4">
-    <div class="flex items-center justify-between text-white border-b border-white/10 pb-4">
-      <h3 class="font-semibold text-sm tracking-wide">Adjust Thumbnail Focal Alignment (Interactive Crop)</h3>
-      <button onclick="cancelCrop()" class="p-2"><i data-lucide="x" class="w-6 h-6"></i></button>
-    </div>
- 
-    <!-- Active Canvas frame center view -->
-    <div class="flex-1 flex items-center justify-center overflow-hidden my-4 relative">
-      <div id="crop-viewport-container" class="relative max-w-full max-h-[70vh] border-2 border-dashed border-luxury-300 flex items-center justify-center">
-        <!-- Interactive crop handles and overlay boxes will hover here -->
-        <canvas id="crop-canvas" class="max-w-full max-h-full"></canvas>
-        <div id="crop-selector" class="absolute border-2 border-luxury-300 bg-transparent cursor-move shadow-[0_0_0_9999px_rgba(0,0,0,0.5)] flex items-center justify-center">
-          <div class="w-4 h-4 bg-luxury-300 absolute -top-1 -left-1"></div>
-          <div class="w-4 h-4 bg-luxury-300 absolute -top-1 -right-1"></div>
-          <div class="w-4 h-4 bg-luxury-300 absolute -bottom-1 -left-1"></div>
-          <div class="w-4 h-4 bg-luxury-300 absolute -bottom-1 -right-1"></div>
-          <span class="text-[9px] text-white bg-luxury-300/80 px-2 py-0.5 rounded font-mono uppercase">Crop Focus</span>
-        </div>
-      </div>
-    </div>
- 
-    <!-- Settings panel controls -->
-    <div class="bg-luxury-900 border-t border-white/10 p-4 max-w-md mx-auto w-full flex items-center justify-between gap-4 text-white">
-      <div class="text-xs text-luxury-100/60 font-light">
-        Drag/resize the selector grid to crop your thumbnail correctly.
-      </div>
-      <button onclick="saveCroppedImage()" class="px-6 py-2.5 bg-luxury-300 text-luxury-900 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-white transition-colors">Apply Crop</button>
-    </div>
-  </div>
- 
- 
-  <!-- E: PROTECTED ADMIN SYSTEM DIALOG -->
-  <div id="admin-modal" class="fixed inset-0 z-50 bg-luxury-900/80 hidden flex items-center justify-center p-4 overflow-y-auto">
-    <!-- Logged Out View (Login Form) -->
-    <div id="admin-login-view" class="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl relative">
-      <button onclick="toggleAdminModal(false)" class="absolute top-4 right-4 p-2 text-luxury-400 hover:text-luxury-900"><i data-lucide="x" class="w-6 h-6"></i></button>
-      <div class="text-center mb-6">
-        <span class="text-xs uppercase tracking-widest text-luxury-300 font-bold block mb-1">Protected Portal</span>
-        <h3 class="font-serif text-2xl font-bold text-luxury-900">Administrator Console</h3>
-      </div>
-      <form id="admin-login-form" onsubmit="handleAdminLogin(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-luxury-400 mb-1">Email Address</label>
-          <input type="email" id="admin-email" required class="w-full px-4 py-2.5 bg-luxury-50 border border-luxury-100 rounded-xl focus:outline-none focus:border-luxury-300 text-sm" placeholder="admin@svwoodworks.com">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-luxury-400 mb-1">Password</label>
-          <input type="password" id="admin-password" required class="w-full px-4 py-2.5 bg-luxury-50 border border-luxury-100 rounded-xl focus:outline-none focus:border-luxury-300 text-sm" placeholder="••••••••">
-        </div>
-        <button type="submit" class="w-full py-3.5 bg-luxury-900 hover:bg-luxury-300 text-white font-semibold text-xs uppercase tracking-widest rounded-xl transition-all">Sign In</button>
-      </form>
-      <div class="mt-6 text-center">
-        <p class="text-[11px] text-luxury-400 leading-normal">
-          This panel is protected by secure Firebase Authentication logic. Only verified administrator accounts can upload portfolio works.
-        </p>
-      </div>
-    </div>
- 
-    <!-- Logged In Dashboard View -->
-    <div id="admin-dashboard-view" class="w-full max-w-5xl bg-luxury-50 rounded-3xl shadow-2xl overflow-hidden hidden flex flex-col md:flex-row max-h-[90vh]">
-      <!-- Left Admin Menu Navigation -->
-      <div class="w-full md:w-1/4 bg-luxury-900 text-white p-6 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-8">
-            <div class="flex flex-col">
-              <span class="font-serif text-lg font-bold tracking-wider text-white uppercase">S.V.W.W</span>
-              <span class="text-[9px] uppercase text-luxury-300 tracking-widest">Admin Control</span>
+        </header>
+
+        <!-- ── SECTIONS ── -->
+
+        <!-- Library Section -->
+        <section class="content-section active" id="section-library">
+            <div class="section-header">
+            <h2>Library</h2>
+            <span class="song-count" id="song-count">0 songs</span>
             </div>
-            <button onclick="toggleAdminModal(false)" class="p-1 md:hidden text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-          </div>
- 
-          <nav class="space-y-2 text-xs font-semibold tracking-wider uppercase text-luxury-100/60">
-            <button onclick="setAdminTab('add-design')" id="admin-menu-add-design" class="w-full text-left px-4 py-3 rounded-xl bg-luxury-300/20 text-white flex items-center gap-2"><i data-lucide="plus-circle" class="w-4 h-4"></i> Add Furniture</button>
-            <button onclick="setAdminTab('banners')" id="admin-menu-banners" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> Banner Slides</button>
-            <button onclick="setAdminTab('manage-categories')" id="admin-menu-manage-categories" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 flex items-center gap-2"><i data-lucide="folder-tree" class="w-4 h-4"></i> Categories</button>
-            <button onclick="setAdminTab('inbound-feedbacks')" id="admin-menu-inbound-feedbacks" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 flex items-center gap-2 relative"><i data-lucide="message-square" class="w-4 h-4"></i> Feedback Inbox <span id="feedback-alert" class="w-2.5 h-2.5 bg-amber-400 rounded-full hidden"></span></button>
-            <button onclick="setAdminTab('manage-designs')" id="admin-menu-manage-designs" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 flex items-center gap-2"><i data-lucide="library" class="w-4 h-4"></i> Edit / Remove</button>
-          </nav>
-        </div>
- 
-        <div class="pt-6 border-t border-white/10 flex items-center justify-between">
-          <div class="text-[10px] text-white/40">
-            Authenticated Admin
-          </div>
-          <button onclick="handleAdminLogout()" class="text-xs font-bold text-luxury-300 hover:underline">Log Out</button>
-        </div>
-      </div>
- 
-      <!-- Right Panel Area (Dynamic dashboard viewports) -->
-      <div class="w-full md:w-3/4 p-6 md:p-8 overflow-y-auto bg-white flex-1" id="admin-content-viewport">
-        <!-- Sub-Panels will inject here dynamically -->
-      </div>
-    </div>
-  </div>
- 
- 
-  <!-- F: FIREBASE DEVELOPER IMPLEMENTATION RULES MANUAL -->
-  <div id="dev-manual-modal" class="fixed inset-0 z-50 bg-luxury-900/90 hidden flex items-center justify-center p-4 overflow-y-auto">
-    <div class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl p-6 md:p-8 relative">
-      <button onclick="toggleDeveloperPanel(false)" class="absolute top-4 right-4 p-2 text-luxury-400 hover:text-luxury-900" aria-label="Close Rules Dialog"><i data-lucide="x" class="w-6 h-6"></i></button>
-      <div class="mb-6 border-b border-luxury-100 pb-4">
-        <span class="text-xs uppercase tracking-widest text-luxury-300 font-bold block mb-1">Developer Sandbox</span>
-        <h3 class="font-serif text-2xl font-bold text-luxury-900">se Operations Setup</h3>
-      </div>
- 
-      <div class="space-y-6 text-xs md:text-sm text-luxury-400 leading-relaxed max-h-[70vh] overflow-y-auto pr-2 no-scrollbar">
-        <p class="font-light">
-          This website has complete Firebase SDK modular integrations inside. Set up your Firebase project console and paste your configuration credentials in the dedicated javascript section. 
-        </p>
- 
-        <!-- Firestore Rules Block -->
-        <div>
-          <div class="flex items-center justify-between bg-luxury-100 px-4 py-2 rounded-t-xl border border-b-0 border-luxury-200">
-            <span class="text-xs uppercase font-mono tracking-wider text-luxury-900 font-bold">firestore.rules</span>
-            <button onclick="copyToClipboard('code-firestore-rules')" class="text-xs text-luxury-300 hover:underline">Copy Code</button>
-          </div>
-          <pre id="code-firestore-rules" class="bg-luxury-900 text-luxury-100 p-4 rounded-b-xl font-mono text-[11px] overflow-x-auto">rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Helper function
-    function isAdmin() {
-      return request.auth != null && request.auth.token.email.matches('.*@svwoodworks\\.com');
-    }
- 
-    match /artifacts/{appId}/public/data/{collectionName}/{document} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
-  }
-}</pre>
-        </div>
- 
-        <!-- Storage Rules Block -->
-        <div>
-          <div class="flex items-center justify-between bg-luxury-100 px-4 py-2 rounded-t-xl border border-b-0 border-luxury-200">
-            <span class="text-xs uppercase font-mono tracking-wider text-luxury-900 font-bold">storage.rules</span>
-            <button onclick="copyToClipboard('code-storage-rules')" class="text-xs text-luxury-300 hover:underline">Copy Code</button>
-          </div>
-          <pre id="code-storage-rules" class="bg-luxury-900 text-luxury-100 p-4 rounded-b-xl font-mono text-[11px] overflow-x-auto">rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    // Helper function
-    function isAdmin() {
-      return request.auth != null && request.auth.token.email.matches('.*@svwoodworks\\.com');
-    }
- 
-    match /{allPaths=**} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
-  }
-}</pre>
-        </div>
- 
-        <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl">
-          <h4 class="font-serif font-bold text-amber-900 mb-1">Local Sandbox Integration Notice</h4>
-          <p class="text-xs text-amber-700 font-light leading-relaxed">
-            By default, the platform initiates in **Demo Mode** using high-quality internal assets. When you substitute your authentic `firebaseConfig` object, the system instantly logs into your live database without breaking any operational features!
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
- 
- 
-  <!-- Notification Toast container -->
-  <div id="toast-wrapper" class="fixed bottom-6 right-6 z-[100] flex flex-col space-y-2 pointer-events-none">
-    <!-- Toasts dynamically appended -->
-  </div>
- 
-   
-  <!-- ==========================================
-       VANILLA JAVASCRIPT & FIREBASE CORE
-       ========================================== -->
-  <script type="module">
-    // Import complete modern Modular Web SDK modules
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, addDoc, onSnapshot, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-    import { getStorage, ref, uploadString, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
- 
-    /* ==========================================================
-       1. FIREBASE CONFIGURATION & INSTANCE CREATION
-       ========================================================== */
-    // LEAVE THESE VALUES EMPTY initially. System will automatically fall back to sandbox operations gracefully.
-   
- 
-    let app, auth, db, storage, appId;
-    let isFirebaseConfigured = false;
- 
-    // Evaluate configuration validity
-    if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "" && firebaseConfig.projectId !== "") {
-      try {
-        app = initializeApp(firebaseConfig);
-        auth = getAuth(app);
-        db = getFirestore(app);
-        storage = getStorage(app);
-        appId = typeof __app_id !== 'undefined' ? __app_id : 'shri-vishwakarma-wood-works-id';
-        isFirebaseConfigured = true;
-        console.log("Firebase initialized successfully in Production Mode!");
-      } catch (err) {
-        console.error("Firebase initialization failed, operating in fallback sandbox mode.", err);
-      }
-    } else {
-      console.log("Firebase config empty. Running in Sandbox Demo mode.");
-    }
- 
-    /* ==========================================================
-       2. MOCK DATASETS & FALLBACK ENGINE (FOR IMMEDIATE SANDBOX ACCESS)
-       ========================================================== */
-    const LOCAL_MOCK_DESIGNS = [
-      {
-        id: "mock-bed-1",
-        title: "Grand Teakwood King Bed",
-        category: "Beds",
-        type: "our-designs",
-        priceRange: "₹85,000 - ₹1,20,000",
-        rating: 5,
-        images: [
-          "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=800&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=800&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=800&auto=format&fit=crop"
-        ],
-        tags: ["solid-teak", "king-size", "luxury-finish", "hidden-storage"],
-        description: "An authentic masterpiece sculpted from the finest plantation teakwood, integrated with responsive hydraulic storage layouts and hand-threaded padded accents.",
-        mostLiked: true,
-        likes: 124,
-        timestamp: Date.now()
-      },
-      {
-        id: "mock-kitchen-1",
-        title: "Modular Charcoal & Oak Kitchen",
-        category: "Kitchens",
-        type: "our-designs",
-        priceRange: "₹1,80,000 - ₹3,20,000",
-        rating: 5,
-        images: [
-          "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=800&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
-        ],
-        tags: ["modular", "anti-scratch-laminate", "blum-fittings", "italian-finish"],
-        description: "Elegant modular system featuring scratchproof acrylic finishes, soft-touch pneumatic slides, and moisture-resistant internal commercial laminates.",
-        mostLiked: true,
-        likes: 98,
-        timestamp: Date.now() - 10000
-      },
-      {
-        id: "mock-sofa-1",
-        title: "Premium Imperial Velvet Sofa",
-        category: "Sofas",
-        type: "our-designs",
-        priceRange: "₹65,000 - ₹95,000",
-        rating: 5,
-        images: [
-          "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=800&auto=format&fit=crop"
-        ],
-        tags: ["velvet", "royal-brass", "sagwan-wood", "high-density-foam"],
-        description: "Crafted out of resilient Sagwan frame foundation with supreme density foam cushions, wrapped in high-grade stain-resistant velvet fabric.",
-        mostLiked: true,
-        likes: 156,
-        timestamp: Date.now() - 20000
-      },
-      {
-        id: "mock-almirah-1",
-        title: "Contemporary Inlaid Oak Wardrobe",
-        category: "Wardrobes",
-        type: "our-designs",
-        priceRange: "₹45,000 - ₹75,000",
-        rating: 4.8,
-        images: [
-          "https://images.unsplash.com/photo-1595428774223-ef52624120d2?q=80&w=800&auto=format&fit=crop"
-        ],
-        tags: ["sliding-doors", "veneer-polish", "glass-shelving"],
-        description: "A highly spacious, modular sliding wardrobe complete with motion-sensing LED panels, premium veneer texture, and toughened security glass.",
-        mostLiked: false,
-        likes: 42,
-        timestamp: Date.now() - 30000
-      },
-      {
-        id: "mock-insp-1",
-        title: "Minimal Nordic Dining Setup",
-        category: "Dining Tables",
-        type: "inspirations",
-        priceRange: "₹75,000 - ₹1,10,000",
-        rating: 5,
-        images: [
-          "https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?q=80&w=800&auto=format&fit=crop"
-        ],
-        tags: ["nordic-oak", "clean-cut", "minimal-finish"],
-        description: "Inspirational design featuring minimal seamless frame cuts with white-oak engineered core lines. Can be fully manufactured by our artisans on order.",
-        mostLiked: false,
-        likes: 31,
-        timestamp: Date.now() - 40000
-      }
-    ];
- 
-    const LOCAL_MOCK_FEEDBACKS = [
-      {
-        id: "feed-1",
-        name: "Devendra Sharma",
-        phone: "+91 99112 23344",
-        rating: 5,
-        comment: "Excellent finish. Their modular kitchen installation exceeded our expectations. The wood quality and finish is top notch.",
-        reply: "Thank you Devendraji! It was an absolute pleasure working on your modern modular kitchen project.",
-        timestamp: Date.now() - 100000
-      }
-    ];
- 
-    const DEFAULT_CATEGORIES = ["Beds", "Almirahs", "Kitchens", "Doors", "Sofas", "Dining Tables", "Wardrobes", "TV Units"];
- 
-    const MOCK_BANNER_IMAGES = [
-      { id: "slide-1", desktopUrl: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1200&auto=format&fit=crop", mobileUrl: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=600&auto=format&fit=crop" },
-      { id: "slide-2", desktopUrl: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1200&auto=format&fit=crop", mobileUrl: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=600&auto=format&fit=crop" },
-      { id: "slide-3", desktopUrl: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1200&auto=format&fit=crop", mobileUrl: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=600&auto=format&fit=crop" }
-    ];
-  
-    /* ==========================================================
-       3. CLIENT STATE MANAGEMENT
-       ========================================================== */
-    const state = {
-      user: null,
-      designs: [],
-      feedbacks: [],
-      banners: [],
-      categories: [],
-      activeFilters: [], // Multiple select array
-      activeTab: 'our-designs', // 'our-designs', 'inspirations', 'all'
-      showAll: false,
-      pinnedIds: JSON.parse(localStorage.getItem('svww_pinned_ids')) || [],
-      likedIds: JSON.parse(localStorage.getItem('svww_liked_ids')) || [],
-      recentlyViewed: JSON.parse(localStorage.getItem('svww_recently_viewed')) || [],
-      currentActiveDetailDesign: null,
-      currentDetailImgIndex: 0,
-      cropSourceFile: null,
-      cropCallback: null,
-      adminActiveTab: 'add-design',
-      feedbackRating: 5
-    };
- 
-    /* ==========================================================
-       4. INITIALIZATION ENGINE (FIREBASE VS FALLBACK SANDBOX)
-       ========================================================== */
-    window.onload = async () => {
-      // Re-init lucide icons
-      lucide.createIcons();
- 
-      // Setup swipe on hero banner element
-      setupSwipeEvents('hero-slider-container', (dir) => {
-        cycleHeroSlide(dir);
-      });
- 
-      // Handle custom detail modal popstate to support browser back button closing popup first
-      window.addEventListener('popstate', (e) => {
-        if (e.state && e.state.modalOpen) {
-          // Keep open
-        } else {
-          closeDetailsModal(true);
-        }
-      });
- 
-      // Start initial load sequences
-      if (isFirebaseConfigured) {
-        initFirebaseIntegration();
-      } else {
-        initSandboxMode();
-      }
- 
-      // Sync local badges
-      updatePinnedUiBadges();
-      renderRecentlyViewed();
-    };
- 
-    // Sandboxed development initializer
-    function initSandboxMode() {
-      showToast("App operational in high-fidelity Demo Mode!", "info");
-      state.designs = [...LOCAL_MOCK_DESIGNS];
-      state.feedbacks = [...LOCAL_MOCK_FEEDBACKS];
-      state.banners = [...MOCK_BANNER_IMAGES];
-      state.categories = [...DEFAULT_CATEGORIES];
-      
-      // Execute layout paints
-      renderHeroBanners();
-      renderCategoryChips();
-      renderDesignsGrid();
-      renderTrendingCarousel();
-      renderFeedbackList();
-    }
- 
-    // High performance live connection initializer
-    async function initFirebaseIntegration() {
-      // 1. Authenticate anonymously or with token if available
-      try {
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
-        }
-      } catch (authError) {
-        console.warn("Auth initialization error, relying on open reads: ", authError);
-      }
- 
-      onAuthStateChanged(auth, (user) => {
-        state.user = user;
-        if (user && user.email && user.email.endsWith('@svwoodworks.com')) {
-          // Enable direct dashboard links
-          console.log("Logged in as Administrator:", user.email);
-          const alertBadge = document.getElementById('feedback-alert');
-          if (alertBadge) alertBadge.classList.remove('hidden');
-        }
-      });
- 
-      // 2. Setup real-time listeners for Collections (Designs, Feedbacks, Banners, Categories)
-      const collDesigns = collection(db, 'artifacts', appId, 'public', 'data', 'designs');
-      onSnapshot(collDesigns, (snapshot) => {
-        const fetched = [];
-        snapshot.forEach((doc) => fetched.push({ id: doc.id, ...doc.data() }));
-        state.designs = fetched.length ? fetched : [...LOCAL_MOCK_DESIGNS];
-        renderDesignsGrid();
-        renderTrendingCarousel();
-      }, (err) => {
-        console.error("Firestore Designs read failure, falling back: ", err);
-        state.designs = [...LOCAL_MOCK_DESIGNS];
-        renderDesignsGrid();
-        renderTrendingCarousel();
-      });
- 
-      const collFeedbacks = collection(db, 'artifacts', appId, 'public', 'data', 'feedbacks');
-      onSnapshot(collFeedbacks, (snapshot) => {
-        const fetched = [];
-        snapshot.forEach((doc) => fetched.push({ id: doc.id, ...doc.data() }));
-        state.feedbacks = fetched.length ? fetched : [...LOCAL_MOCK_FEEDBACKS];
-        renderFeedbackList();
-      });
- 
-      const collBanners = collection(db, 'artifacts', appId, 'public', 'data', 'banners');
-      onSnapshot(collBanners, (snapshot) => {
-        const fetched = [];
-        snapshot.forEach((doc) => fetched.push({ id: doc.id, ...doc.data() }));
-        state.banners = fetched.length ? fetched : [...MOCK_BANNER_IMAGES];
-        renderHeroBanners();
-      });
- 
-      const collCategories = collection(db, 'artifacts', appId, 'public', 'data', 'categories');
-      onSnapshot(collCategories, (snapshot) => {
-        const fetched = [];
-        snapshot.forEach((doc) => fetched.push({ id: doc.id, ...doc.data() }));
-        state.categories = fetched.length ? fetched.map(c => c.name) : [...DEFAULT_CATEGORIES];
-        renderCategoryChips();
-      });
-    }
- 
- 
-    /* ==========================================================
-       5. COMPONENT RENDER ENGINE (LAYOUT PAINTERS)
-       ========================================================== */
-    
-    // RENDER HERO SLIDER
-    let currentSlideIndex = 0;
-    let sliderTimer = null;
-    function renderHeroBanners() {
-      const container = document.getElementById('hero-slider-container');
-      if (!container) return;
-      
-      container.innerHTML = '';
-      if (!state.banners.length) return;
- 
-      state.banners.forEach((banner, idx) => {
-        const slide = document.createElement('div');
-        slide.className = `absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${idx === currentSlideIndex ? 'opacity-100' : 'opacity-0'}`;
-        
-        // Premium fluid responsive backgrounds
-        const screenWidth = window.innerWidth;
-        const imgUrl = (screenWidth < 640 && banner.mobileUrl) ? banner.mobileUrl : banner.desktopUrl;
-        slide.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${imgUrl}')`;
-        container.appendChild(slide);
-      });
- 
-      // Clear layout and draw slider info container back
-      const overlayDiv = document.createElement('div');
-      overlayDiv.className = "absolute inset-0 flex items-center justify-center text-center px-4 bg-luxury-900/35 z-10 select-none pointer-events-none";
-      overlayDiv.innerHTML = `
-        <div class="max-w-2xl transform translate-y-4 transition-all duration-700">
-          <span class="text-xs uppercase tracking-[0.3em] text-luxury-300 font-bold mb-3 block">Est. 1995</span>
-          <h2 class="font-serif text-3xl md:text-5xl font-semibold leading-tight tracking-wide mb-4 text-white">
-            Shri Vishwakarma <span class="italic font-normal text-luxury-100">Wood Works</span>
-          </h2>
-          <p class="text-xs md:text-sm text-luxury-100 tracking-wide max-w-lg mx-auto mb-8 font-light">
-            Crafting luxury bespoke wooden masterpieces, modular kitchens, modular wardrobes and custom beds tailored specifically to your layout dreams.
-          </p>
-          <div class="flex items-center justify-center gap-4 pointer-events-auto">
-            <a href="#designs" class="px-6 py-3 bg-luxury-300 text-luxury-900 font-bold text-[10px] uppercase tracking-widest rounded-full hover:bg-white transition-all duration-300">View Designs</a>
-            <a href="#contact" class="px-6 py-3 border border-white/40 bg-transparent text-white font-bold text-[10px] uppercase tracking-widest rounded-full hover:bg-white hover:text-luxury-900 transition-all duration-300">Contact Us</a>
-          </div>
-        </div>
-      `;
-      container.appendChild(overlayDiv);
- 
-      // Auto rotation interval setup
-      if (sliderTimer) clearInterval(sliderTimer);
-      sliderTimer = setInterval(() => {
-        cycleHeroSlide(1);
-      }, 5000);
-    }
- 
-    function cycleHeroSlide(direction) {
-      if (!state.banners.length) return;
-      currentSlideIndex = (currentSlideIndex + direction + state.banners.length) % state.banners.length;
-      const slides = document.querySelectorAll('#hero-slider-container > div:not(.pointer-events-none)');
-      slides.forEach((slide, idx) => {
-        if (idx === currentSlideIndex) {
-          slide.classList.remove('opacity-0');
-          slide.classList.add('opacity-100');
-        } else {
-          slide.classList.remove('opacity-100');
-          slide.classList.add('opacity-0');
-        }
-      });
-    }
- 
-    // RENDER MULTI-SELECT CATEGORY CHIPS
-    window.toggleCategoryFilter = function(category) {
-      const idx = state.activeFilters.indexOf(category);
-      if (idx > -1) {
-        state.activeFilters.splice(idx, 1);
-      } else {
-        state.activeFilters.push(category);
-      }
-      renderCategoryChips();
-      renderDesignsGrid();
-    }
- 
-    function renderCategoryChips() {
-      const container = document.getElementById('category-chips-container');
-      if (!container) return;
-      container.innerHTML = '';
- 
-      // Clean default "All" trigger button
-      const allBtn = document.createElement('button');
-      const isAllSelected = state.activeFilters.length === 0;
-      allBtn.className = `px-6 py-2.5 rounded-full text-xs uppercase tracking-wider font-bold whitespace-nowrap transition-all border ${
-        isAllSelected 
-          ? 'bg-luxury-900 text-white border-luxury-900' 
-          : 'bg-white text-luxury-900 border-luxury-100 hover:border-luxury-300'
-      }`;
-      allBtn.textContent = 'ALL CATEGORIES';
-      allBtn.onclick = () => {
-        state.activeFilters = [];
-        renderCategoryChips();
-        renderDesignsGrid();
-      };
-      container.appendChild(allBtn);
- 
-      state.categories.forEach(cat => {
-        const chip = document.createElement('button');
-        const isActive = state.activeFilters.includes(cat);
-        chip.className = `px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium whitespace-nowrap transition-all border flex items-center gap-2 ${
-          isActive 
-            ? 'bg-luxury-300 text-luxury-900 border-luxury-300 font-bold' 
-            : 'bg-white text-luxury-400 border-luxury-100 hover:border-luxury-300 hover:text-luxury-900'
-        }`;
-        chip.innerHTML = `${cat} ${isActive ? '<i data-lucide="check" class="w-3.5 h-3.5"></i>' : ''}`;
-        chip.onclick = () => toggleCategoryFilter(cat);
-        container.appendChild(chip);
-      });
-      lucide.createIcons();
-    }
- 
-    // RENDER LIVE DESIGNS PORTFOLIO GRID
-    window.setActiveTab = function(tabName) {
-      state.activeTab = tabName;
-      // Style active trigger
-      ['our-designs', 'inspirations', 'all'].forEach(tab => {
-        const el = document.getElementById(`tab-${tab}`);
-        if (!el) return;
-        if (tab === tabName) {
-          el.className = "px-5 py-2.5 rounded-full text-luxury-900 bg-white transition-all shadow-sm font-bold";
-        } else {
-          el.className = "px-5 py-2.5 rounded-full text-luxury-400 hover:text-luxury-900 transition-all";
-        }
-      });
-      renderDesignsGrid();
-    }
- 
-    window.toggleViewAll = function() {
-      state.showAll = !state.showAll;
-      const btn = document.getElementById('view-all-btn');
-      if (btn) {
-        btn.textContent = state.showAll ? "COLLAPSE VIEW" : "VIEW ALL COLLECTIONS";
-      }
-      renderDesignsGrid();
-    }
- 
-    function renderDesignsGrid() {
-      const grid = document.getElementById('design-grid');
-      if (!grid) return;
-      grid.innerHTML = '';
- 
-      // Filtering Pipeline
-      let filtered = state.designs.filter(design => {
-        // Tab Check
-        if (state.activeTab !== 'all' && design.type !== state.activeTab) return false;
-        // Categories Multi-Select Check
-        if (state.activeFilters.length > 0 && !state.activeFilters.includes(design.category)) return false;
-        return true;
-      });
- 
-      // Pagination / View All Limiter
-      const totalCount = filtered.length;
-      if (!state.showAll) {
-        filtered = filtered.slice(0, 4);
-      }
- 
-      // Handle empty states elegantly
-      if (totalCount === 0) {
-        grid.className = "col-span-full py-16 flex flex-col items-center justify-center text-center";
-        grid.innerHTML = `
-          <i data-lucide="info" class="w-12 h-12 text-luxury-300 mb-3"></i>
-          <p class="text-luxury-900 font-serif text-lg font-bold mb-1">No matching designs located</p>
-          <p class="text-xs text-luxury-400 max-w-sm">Try modifying your filter parameters or select other categories above to refresh showroom display.</p>
-        `;
-        lucide.createIcons();
-        return;
-      } else {
-        grid.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8";
-      }
- 
-      filtered.forEach(item => {
-        const isLiked = state.likedIds.includes(item.id);
-        const isPinned = state.pinnedIds.includes(item.id);
- 
-        const card = document.createElement('div');
-        card.className = "group relative bg-white border border-luxury-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col select-none cursor-pointer";
-        
-        // Single tapping on the main body triggers Detailed Preview Popup
-        card.innerHTML = `
-          <div class="relative overflow-hidden aspect-card bg-luxury-100" onclick="openDetailsModal('${item.id}')">
-            <img src="${item.images[0]}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-              <span class="text-[10px] uppercase text-white font-semibold tracking-wider flex items-center gap-1">Click to examine <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i></span>
+            <div id="library-empty" class="empty-state hidden">
+            <div class="empty-icon"><i data-lucide="music-2"></i></div>
+            <h3>No songs yet</h3>
+            <p>Upload your first track to get started</p>
             </div>
-            <div class="absolute top-3 left-3 flex items-center gap-1.5">
-              <span class="bg-white/90 text-luxury-900 text-[9px] uppercase tracking-wider font-extrabold px-2 py-1 rounded-md shadow-sm">${item.category}</span>
+            <div class="songs-grid" id="library-grid"></div>
+        </section>
+
+        <!-- Favorites Section -->
+        <section class="content-section" id="section-favorites">
+            <div class="section-header">
+            <h2>Favorites</h2>
             </div>
-          </div>
-          <div class="p-5 flex-1 flex flex-col justify-between">
-            <div onclick="openDetailsModal('${item.id}')">
-              <h3 class="font-serif text-base font-bold text-luxury-900 group-hover:text-luxury-300 transition-colors line-clamp-1 mb-1">${item.title}</h3>
-              <p class="text-[11px] text-luxury-400 font-bold uppercase tracking-wider mb-3">${item.priceRange || 'Price on request'}</p>
+            <div id="favorites-empty" class="empty-state hidden">
+            <div class="empty-icon"><i data-lucide="heart"></i></div>
+            <h3>No favorites yet</h3>
+            <p>Heart a song to add it here</p>
             </div>
-            
-            <!-- Quick controls (Must NOT need to open modal first) -->
-            <div class="flex items-center justify-between border-t border-luxury-50 pt-3">
-              <div class="flex items-center space-x-2">
-                <!-- Like Button -->
-                <button onclick="handleLikeToggle('${item.id}', event)" class="p-2 rounded-full border border-luxury-100 hover:border-luxury-300 flex items-center justify-center bg-white" aria-label="Like creation">
-                  <i data-lucide="heart" class="w-4 h-4 ${isLiked ? 'text-red-500 fill-red-500' : 'text-luxury-400'}"></i>
-                </button>
-                <span class="text-xs text-luxury-400">${item.likes || 0}</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <!-- Pin Button -->
-                <button onclick="handlePinToggle('${item.id}', event)" class="p-2 rounded-full border border-luxury-100 hover:border-luxury-300 flex items-center justify-center bg-white" aria-label="Pin design">
-                  <i data-lucide="pin" class="w-4 h-4 ${isPinned ? 'text-luxury-300 fill-luxury-300' : 'text-luxury-400'}"></i>
-                </button>
-                <!-- Share Button -->
-                <button onclick="triggerDirectShare('${item.id}', event)" class="p-2 rounded-full border border-luxury-100 hover:border-luxury-300 flex items-center justify-center bg-white" aria-label="Share specification">
-                  <i data-lucide="share-2" class="w-4 h-4 text-luxury-400"></i>
-                </button>
-                </div>
+            <div class="songs-grid" id="favorites-grid"></div>
+        </section>
+
+        <!-- Playlists Section -->
+        <section class="content-section" id="section-playlists">
+            <div class="section-header">
+            <h2>Playlists</h2>
+            <button class="btn-sm auth-only hidden" id="create-playlist-btn">
+                <i data-lucide="plus"></i> New Playlist
+            </button>
             </div>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-      lucide.createIcons();
-    }
- 
-    // RENDER TRENDING MOST LIKED CAROUSEL
-    window.scrollTrending = function(direction) {
-      const container = document.getElementById('trending-carousel-container');
-      if (!container) return;
-      const amount = container.clientWidth * 0.8 * direction;
-      container.scrollBy({ left: amount, behavior: 'smooth' });
-    }
- 
-    function renderTrendingCarousel() {
-      const container = document.getElementById('trending-carousel-container');
-      if (!container) return;
-      container.innerHTML = '';
- 
-      const trending = state.designs.filter(d => d.mostLiked || d.likes > 80);
-      if (!trending.length) {
-        container.innerHTML = `
-          <div class="w-full text-center py-8 text-xs text-luxury-400">
-            No trending products marked. Try liking designs to populate this showcase!
-          </div>
-        `;
-        return;
-      }
- 
-      trending.forEach(item => {
-        const card = document.createElement('div');
-        card.className = "min-w-[280px] md:min-w-[340px] max-w-[340px] bg-white rounded-3xl border border-luxury-100 overflow-hidden shadow-sm flex-shrink-0 relative group select-none cursor-pointer";
-        card.onclick = () => openDetailsModal(item.id);
-        card.innerHTML = `
-          <div class="relative aspect-card overflow-hidden">
-            <img src="${item.images[0]}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
-            <div class="absolute top-3 right-3 bg-red-500 text-white text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full flex items-center gap-1 shadow-md">
-              <i data-lucide="flame" class="w-3.5 h-3.5 fill-white"></i> Trending
+            <div id="playlists-empty" class="empty-state hidden">
+            <div class="empty-icon"><i data-lucide="list-music"></i></div>
+            <h3>No playlists yet</h3>
+            <p>Create a playlist to organize your music</p>
             </div>
-          </div>
-          <div class="p-5">
-            <span class="text-[10px] font-bold tracking-widest text-luxury-300 uppercase block mb-1">${item.category}</span>
-            <h3 class="font-serif text-lg font-bold text-luxury-900 group-hover:text-luxury-300 transition-colors mb-2 line-clamp-1">${item.title}</h3>
-            <p class="text-xs text-luxury-400 line-clamp-2 font-light leading-relaxed mb-4">${item.description}</p>
-            <div class="flex items-center justify-between border-t border-luxury-100 pt-3 text-xs text-luxury-400">
-              <span class="font-bold uppercase tracking-wider text-luxury-900">${item.priceRange}</span>
-              <span class="flex items-center gap-1 font-semibold"><i data-lucide="heart" class="w-4 h-4 text-red-500 fill-red-500"></i> ${item.likes} Likes</span>
-            </div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-      lucide.createIcons();
- 
-      // Configure touch support and sliding tracking calculations
-      setupSwipeEvents('trending-carousel-container', (dir) => {
-        scrollTrending(dir);
-      });
-    }
- 
-    // RENDER FEEDBACK TESTIMONIALS LIST
-    function renderFeedbackList() {
-      const container = document.getElementById('feedback-list-container');
-      if (!container) return;
-      container.innerHTML = '';
- 
-      if (!state.feedbacks.length) {
-        container.innerHTML = `
-          <div class="text-center py-12 text-xs text-luxury-400">
-            No active feedback or reviews recorded yet. Feel free to submit the first one!
-          </div>
-        `;
-        return;
-      }
- 
-      state.feedbacks.forEach(feed => {
-        let stars = '';
-        for (let i = 1; i <= 5; i++) {
-          stars += `<i data-lucide="star" class="w-4 h-4 ${i <= feed.rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}"></i>`;
-        }
- 
-        const block = document.createElement('div');
-        block.className = "bg-white p-6 rounded-2xl border border-luxury-100 shadow-sm relative";
-        block.innerHTML = `
-          <div class="flex items-center justify-between mb-3">
-            <div>
-              <h4 class="font-bold text-luxury-900 text-sm leading-tight">${feed.name}</h4>
-              <span class="text-[10px] text-luxury-400 uppercase tracking-widest">${feed.phone ? 'Verified Client' : 'Visitor Guest'}</span>
-            </div>
-            <div class="flex gap-0.5">${stars}</div>
-          </div>
-          <p class="text-xs md:text-sm text-luxury-400 font-light leading-relaxed mb-4">"${feed.comment}"</p>
-          
-          <!-- Admin Reply Block -->
-          ${feed.reply ? `
-            <div class="bg-luxury-100 p-4 rounded-xl border-l-2 border-luxury-300 mt-2">
-              <div class="flex items-center gap-1.5 mb-1.5 text-xs font-bold uppercase text-luxury-900">
-                <i data-lucide="shield" class="w-4 h-4 text-luxury-300"></i> Artisans Response
-              </div>
-              <p class="text-xs text-luxury-400 italic">"${feed.reply}"</p>
-            </div>
-          ` : ''}
-        `;
-        container.appendChild(block);
-      });
-      lucide.createIcons();
-    }
-    /* ==========================================================
-       6. SMART TEXT INFERENCE INTENT SEARCH ENGINE
-       ========================================================== */
-    window.toggleSearchModal = function(show) {
-      const modal = document.getElementById('search-modal');
-      if (modal) {
-        modal.classList.toggle('hidden', !show);
-        if (show) {
-          const inp = document.getElementById('smart-search-input');
-          if (inp) {
-            inp.value = '';
-            inp.focus();
-          }
-          processIntentSearch('');
-        }
-      }
-    }
- 
-    window.injectSearchText = function(text) {
-      const inp = document.getElementById('smart-search-input');
-      if (inp) {
-        inp.value = text;
-        processIntentSearch(text);
-      }
-    }
- 
-    window.processIntentSearch = function(queryText) {
-      const container = document.getElementById('search-results-list');
-      if (!container) return;
-      container.innerHTML = '';
- 
-      if (!queryText.trim()) {
-        container.innerHTML = `
-          <p class="text-center text-xs text-luxury-400 py-8">Begin searching based on custom needs. E.g. "affordable bed for master bedroom"</p>
-        `;
-        return;
-      }
- 
-      // NLP Intent parsing keywords
-      const words = queryText.toLowerCase().split(/\s+/);
-      const isLuxury = words.some(w => ['premium', 'luxury', 'expensive', 'teak', 'royal', 'sagwan', 'grand'].includes(w));
-      const isBudget = words.some(w => ['cheap', 'budget', 'affordable', 'low price', 'economical', 'basic'].includes(w));
-      
-      const scoredResults = state.designs.map(design => {
-        let score = 0;
-        const titleLower = design.title.toLowerCase();
-        const descLower = design.description.toLowerCase();
-        const catLower = design.category.toLowerCase();
-        const tagsJoined = design.tags ? design.tags.join(' ').toLowerCase() : '';
- 
-        // Token matches
-        words.forEach(word => {
-          if (titleLower.includes(word)) score += 10;
-          if (catLower.includes(word)) score += 15;
-          if (descLower.includes(word)) score += 4;
-          if (tagsJoined.includes(word)) score += 6;
-        });
- 
-        // Price and quality tag classification inference matching
-        if (isLuxury) {
-          if (design.title.includes("Teak") || design.title.includes("Premium") || design.title.includes("Imperial")) score += 8;
-        }
-        if (isBudget) {
-          if (design.priceRange && (design.priceRange.includes("₹45,000") || design.priceRange.includes("₹65,000"))) score += 8;
-        }
- 
-        return { design, score };
-      });
- 
-      // Filter and sort calculated high scoring intent matches
-      const finalMatches = scoredResults
-        .filter(r => r.score > 0)
-        .sort((a, b) => b.score - a.score);
- 
-      if (!finalMatches.length) {
-        container.innerHTML = `
-          <div class="text-center py-8">
-            <p class="text-xs text-luxury-400">No matching furniture matches. Adjust parameters or search simpler tags.</p>
-          </div>
-        `;
-        return;
-      }
- 
-      finalMatches.forEach(({ design }) => {
-        const item = document.createElement('div');
-        item.className = "flex items-center gap-4 p-3 hover:bg-luxury-100 rounded-2xl transition-colors cursor-pointer";
-        item.onclick = () => {
-          toggleSearchModal(false);
-          openDetailsModal(design.id);
-        };
-        item.innerHTML = `
-          <img src="${design.images[0]}" alt="" class="w-16 h-12 object-cover rounded-xl bg-luxury-100">
-          <div class="flex-1">
-            <span class="text-[9px] uppercase tracking-wider text-luxury-300 font-bold block">${design.category}</span>
-            <h4 class="font-bold text-luxury-900 text-sm">${design.title}</h4>
-            <p class="text-xs text-luxury-400 line-clamp-1">${design.priceRange}</p>
-          </div>
-          <i data-lucide="chevron-right" class="w-4 h-4 text-luxury-300"></i>
-        `;
-        container.appendChild(item);
-      });
-      lucide.createIcons();
-    }
-    /* ==========================================================
-       7. DETAILED POPUP WITH PORTRAIT/LANDSCAPE RENDERING ENGINE
-       ========================================================== */
-    window.openDetailsModal = function(designId) {
-      const design = state.designs.find(d => d.id === designId);
-      if (!design) return;
- 
-      state.currentActiveDetailDesign = design;
-      state.currentDetailImgIndex = 0;
- 
-      // Update dialog properties
-      const modal = document.getElementById('design-details-modal');
-      document.getElementById('details-category').textContent = design.category.toUpperCase();
-      document.getElementById('details-title').textContent = design.title;
-      document.getElementById('details-price').textContent = design.priceRange || 'Price on request';
-      document.getElementById('details-desc').textContent = design.description;
- 
-      // Handle specifications tags
-      const tagsContainer = document.getElementById('details-tags-list');
-      tagsContainer.innerHTML = '';
-      if (design.tags && design.tags.length) {
-        design.tags.forEach(t => {
-          const tag = document.createElement('span');
-          tag.className = "px-2.5 py-1 bg-luxury-50 text-[10px] border border-luxury-100 rounded-md font-semibold text-luxury-900 tracking-wider uppercase";
-          tag.textContent = t.replace('-', ' ');
-          tagsContainer.appendChild(tag);
-        });
-      }
- 
-      // Configure history pushState to support browser back button operation closing modal first
-      history.pushState({ modalOpen: true }, '');
- 
-      // Trigger Recently Viewed array sequence push and localStorage update
-      let rViewed = state.recentlyViewed.filter(id => id !== designId);
-      rViewed.unshift(designId);
-      state.recentlyViewed = rViewed.slice(0, 8);
-      localStorage.setItem('svww_recently_viewed', JSON.stringify(state.recentlyViewed));
- 
-      // Paint image sliders
-      renderDetailsSlider();
-      renderRecentlyViewed();
-      renderSimilarDesigns(design.category, designId);
- 
-      if (modal) modal.classList.remove('hidden');
-    }
- 
-    window.closeDetailsModal = function(isBackAction = false) {
-      const modal = document.getElementById('design-details-modal');
-      if (modal && !modal.classList.contains('hidden')) {
-        modal.classList.add('hidden');
-        if (!isBackAction) {
-          // If manually closed, pop state
-          history.replaceState(null, '');
-        }
-      }
-    }
- 
-    function renderDetailsSlider() {
-      const track = document.getElementById('details-image-track');
-      if (!track) return;
-      track.innerHTML = '';
- 
-      const images = state.currentActiveDetailDesign.images;
-      document.getElementById('details-image-total').textContent = images.length;
-      document.getElementById('details-image-idx').textContent = state.currentDetailImgIndex + 1;
- 
-      images.forEach((imgUrl, idx) => {
-        const slide = document.createElement('div');
-        // Fit container properly respecting ratio: use object-contain for portrait/landscape accuracy
-        slide.className = `absolute inset-0 transition-opacity duration-500 flex items-center justify-center ${idx === state.currentDetailImgIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`;
-        slide.innerHTML = `<img src="${imgUrl}" alt="" class="max-w-full max-h-full object-contain" style="aspect-ratio: auto;">`;
-        track.appendChild(slide);
-      });
- 
-      // Swipe trigger initialization
-      setupSwipeEvents('details-image-track', (dir) => {
-        navigateDetailsImage(dir);
-      });
-    }
- 
-    window.navigateDetailsImage = function(direction) {
-      if (!state.currentActiveDetailDesign) return;
-      const images = state.currentActiveDetailDesign.images;
-      state.currentDetailImgIndex = (state.currentDetailImgIndex + direction + images.length) % images.length;
-      renderDetailsSlider();
-    }
- 
-    function renderSimilarDesigns(category, excludeId) {
-      const track = document.getElementById('details-similar-track');
-      if (!track) return;
-      track.innerHTML = '';
- 
-      const matches = state.designs.filter(d => d.category === category && d.id !== excludeId).slice(0, 4);
-      if (!matches.length) {
-        track.innerHTML = '<span class="text-xs text-luxury-400 italic">No alternative matches yet in library.</span>';
-        return;
-      }
- 
-      matches.forEach(item => {
-        const block = document.createElement('div');
-        block.className = "w-24 flex-shrink-0 cursor-pointer group";
-        block.onclick = () => {
-          closeDetailsModal();
-          // Open new item on next frame
-          setTimeout(() => openDetailsModal(item.id), 200);
-        };
-        block.innerHTML = `
-          <div class="h-16 rounded-xl overflow-hidden bg-luxury-100 mb-1">
-            <img src="${item.images[0]}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
-          </div>
-          <span class="text-[10px] text-luxury-900 block truncate font-bold leading-none">${item.title}</span>
-        `;
-        track.appendChild(block);
-      });
-    }
-    /* ==========================================================
-       8. PIN STORAGE CONTROL & COMPILED MULTI-PRODUCT INQUIRY
-       ========================================================== */
-    window.togglePinSection = function(show) {
-      const drawer = document.getElementById('pin-drawer');
-      if (drawer) {
-        drawer.classList.toggle('hidden', !show);
-        if (show) {
-          // Push State on opening pinned drawer for back action mapping
-          history.pushState({ modalOpen: true }, '');
-          drawer.classList.remove('translate-x-full');
-          renderPinnedItemsDrawer();
-        } else {
-          drawer.classList.add('translate-x-full');
-        }
-      }
-    }
- 
-    window.handlePinToggle = function(designId, event) {
-      if (event) event.stopPropagation();
-      const idx = state.pinnedIds.indexOf(designId);
-      if (idx > -1) {
-        state.pinnedIds.splice(idx, 1);
-        showToast("Design removed from pinned folder", "info");
-      } else {
-        state.pinnedIds.push(designId);
-        showToast("Design pinned to folder successfully", "success");
-      }
-      localStorage.setItem('svww_pinned_ids', JSON.stringify(state.pinnedIds));
-      updatePinnedUiBadges();
-      renderDesignsGrid();
-    }
- 
-    function updatePinnedUiBadges() {
-      const badge = document.getElementById('pin-badge');
-      if (badge) {
-        const count = state.pinnedIds.length;
-        badge.textContent = count;
-        if (count > 0) {
-          badge.classList.remove('hidden');
-        } else {
-          badge.classList.add('hidden');
-        }
-      }
-    }
- 
-    // Paint items in pinned list drawer with checkboxes for multiselection
-    const activeSelectedInquiryIds = new Set();
-    function renderPinnedItemsDrawer() {
-      const container = document.getElementById('pin-items-scroller');
-      if (!container) return;
-      container.innerHTML = '';
- 
-      if (!state.pinnedIds.length) {
-        container.innerHTML = `
-          <div class="text-center py-12 flex flex-col items-center justify-center text-luxury-400">
-            <i data-lucide="pin" class="w-10 h-10 mb-2 text-luxury-100"></i>
-            <p class="text-xs font-light">Your pinned collections folder is empty. Use the pins on cards to accumulate products!</p>
-          </div>
-        `;
-        document.getElementById('pin-selected-count').textContent = "0 Selected";
-        lucide.createIcons();
-        return;
-      }
- 
-      state.pinnedIds.forEach(id => {
-        const design = state.designs.find(d => d.id === id);
-        if (!design) return;
- 
-        // Auto select by default on render
-        activeSelectedInquiryIds.add(id);
- 
-        const card = document.createElement('div');
-        card.className = "flex items-center gap-3 p-3 bg-luxury-50 rounded-2xl border border-luxury-100 relative group";
-        
-        const isChecked = activeSelectedInquiryIds.has(id);
-        
-        card.innerHTML = `
-          <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleInquiryCheckbox('${id}', this.checked)" class="w-4 h-4 rounded text-luxury-300 focus:ring-0 cursor-pointer">
-          <img src="${design.images[0]}" alt="" class="w-16 h-12 object-cover rounded-xl bg-luxury-100 cursor-pointer" onclick="openDetailsModal('${id}')">
-          <div class="flex-1 cursor-pointer" onclick="openDetailsModal('${id}')">
-            <h4 class="font-bold text-luxury-900 text-xs line-clamp-1">${design.title}</h4>
-            <span class="text-[10px] uppercase text-luxury-400 font-bold">${design.category}</span>
-          </div>
-          <button onclick="handlePinToggle('${id}', event); renderPinnedItemsDrawer();" class="p-1 text-luxury-400 hover:text-red-500" aria-label="Remove pin"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-        `;
-        container.appendChild(card);
-      });
- 
-      document.getElementById('pin-selected-count').textContent = `${activeSelectedInquiryIds.size} Selected`;
-      lucide.createIcons();
-    }
- 
-    window.toggleInquiryCheckbox = function(id, isChecked) {
-      if (isChecked) {
-        activeSelectedInquiryIds.add(id);
-      } else {
-        activeSelectedInquiryIds.delete(id);
-      }
-      document.getElementById('pin-selected-count').textContent = `${activeSelectedInquiryIds.size} Selected`;
-    }
-     // MULTI-PRODUCT WHATSAPP & EMAIL INTEGRATION ACTIONS
-    window.triggerPinnedInquiry = function(medium) {
-      if (activeSelectedInquiryIds.size === 0) {
-        showToast("Please select at least one pinned item to compile inquiry!", "info");
-        return;
-      }
- 
-      const selectedItems = Array.from(activeSelectedInquiryIds).map(id => state.designs.find(d => d.id === id)).filter(Boolean);
-      const compileNames = selectedItems.map(item => `- ${item.title} (${item.category}): ${item.priceRange}`).join('\n');
-      
-      const message = `Hello Shri Vishwakarma Wood Works,\n\nI would like to raise an design specification inquiry for the following curated models:\n\n${compileNames}\n\nPlease share availability and production times. Thank you!`;
-      
-      if (medium === 'whatsapp') {
-        const phone = "919876543210"; // Actual Admin recipient line
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
-      } else if (medium === 'email') {
-        const email = "contact@svwoodworks.com";
-        const subject = "Curated Furniture Catalog Inquiry - SV Wood Works";
-        const url = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
-      }
-    }
- 
-    // SINGLE PRODUCT DETAIL OVERLAY INQUIRIES
-    window.triggerInquiry = function(medium) {
-      if (!state.currentActiveDetailDesign) return;
-      const item = state.currentActiveDetailDesign;
-      const message = `Hello Shri Vishwakarma Wood Works,\n\nI am highly interested in matching my layout specifications for:\n\nProduct Name: ${item.title}\nCategory: ${item.category}\nEstimated Price: ${item.priceRange}\nLink reference: ${window.location.origin}/#details/${item.id}\n\nPlease share more custom structure options and catalogs!`;
- 
-      if (medium === 'whatsapp') {
-        const phone = "919876543210";
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
-      } else if (medium === 'email') {
-        const email = "contact@svwoodworks.com";
-        const subject = `Design Inquiry: ${item.title}`;
-        const url = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
-      }
-    }
- 
-    // SHARE LOGIC ON CARDS
-    window.triggerDirectShare = function(id, event) {
-      if (event) event.stopPropagation();
-      const item = state.designs.find(d => d.id === id);
-      if (!item) return;
- 
-      const shareText = `Explore ${item.title} at Shri Vishwakarma Wood Works!\nEstimated: ${item.priceRange}`;
-      const url = `${window.location.origin}/#details/${id}`;
- 
-      if (navigator.share) {
-        navigator.share({
-          title: 'SV Wood Works Portfolio',
-          text: shareText,
-          url: url,
-        }).catch(err => console.log(err));
-      } else {
-        // Fallback document clipboard copying
-        const temp = document.createElement('input');
-        document.body.appendChild(temp);
-        temp.value = `${shareText}\nLink: ${url}`;
-        temp.select();
-        document.execCommand('copy');
-        document.body.removeChild(temp);
-        showToast("Specification link copied to clipboard!", "success");
-      }
-    }
-   /* ==========================================================
-       9. FEEDBACK BOARD HANDLING SYSTEM
-       ========================================================== */
-    window.setFeedbackRating = function(rating) {
-      state.feedbackRating = rating;
-      const stars = document.querySelectorAll('#star-rating-selector button i');
-      stars.forEach((star, idx) => {
-        if (idx < rating) {
-          star.classList.add('text-yellow-500', 'fill-yellow-500');
-          star.classList.remove('text-gray-300');
-        } else {
-          star.classList.remove('text-yellow-500', 'fill-yellow-500');
-          star.classList.add('text-gray-300');
-        }
-      });
-      document.getElementById('feedback-rating').value = rating;
-    }
- 
-    window.handleFeedbackSubmit = async function(event) {
-      event.preventDefault();
-      const name = document.getElementById('feedback-name').value;
-      const phone = document.getElementById('feedback-phone').value || '';
-      const comment = document.getElementById('feedback-comment').value;
-      const rating = parseInt(document.getElementById('feedback-rating').value);
- 
-      const obj = {
-        name,
-        phone,
-        rating,
-        comment,
-        reply: '',
-        timestamp: Date.now()
-      };
- 
-      if (isFirebaseConfigured) {
-        try {
-          const coll = collection(db, 'artifacts', appId, 'public', 'data', 'feedbacks');
-          await addDoc(coll, obj);
-          showToast("Review submitted for verification", "success");
-        } catch (err) {
-          console.error(err);
-          showToast("Unable to write feedback. Sandboxed locally.", "info");
-        }
-      } else {
-        // Demo persistence
-        obj.id = `feed-${Date.now()}`;
-        state.feedbacks.unshift(obj);
-        renderFeedbackList();
-        showToast("Review submitted in Demo Mode!", "success");
-      }
- 
-      // Reset fields
-      document.getElementById('feedback-form').reset();
-      setFeedbackRating(5);
-    }
- 
-    /* ==========================================================
-       10. RECENTLY VIEWED & LIKES UI INTERACTIONS
-       ========================================================== */
-    window.handleLikeToggle = function(id, event) {
-      if (event) event.stopPropagation();
-      const design = state.designs.find(d => d.id === id);
-      if (!design) return;
- 
-      const idx = state.likedIds.indexOf(id);
-      if (idx > -1) {
-        state.likedIds.splice(idx, 1);
-        design.likes = Math.max(0, (design.likes || 0) - 1);
-      } else {
-        state.likedIds.push(id);
-        design.likes = (design.likes || 0) + 1;
-        showToast("Added to liked items!", "success");
-      }
- 
-      localStorage.setItem('svww_liked_ids', JSON.stringify(state.likedIds));
-      
-      // If live Firebase enabled, push update
-      if (isFirebaseConfigured) {
-        const dDoc = doc(db, 'artifacts', appId, 'public', 'data', 'designs', id);
-        updateDoc(dDoc, { likes: design.likes }).catch(e => console.error(e));
-      } else {
-        renderDesignsGrid();
-        renderTrendingCarousel();
-      }
-    }
- 
-    function renderRecentlyViewed() {
-      const container = document.getElementById('recently-viewed-list');
-      const section = document.getElementById('recently-viewed-section');
-      if (!container || !section) return;
- 
-      if (state.recentlyViewed.length === 0) {
-        section.classList.add('hidden');
-        return;
-      }
- 
-      section.classList.remove('hidden');
-      container.innerHTML = '';
- 
-      state.recentlyViewed.forEach(id => {
-        const design = state.designs.find(d => d.id === id);
-        if (!design) return;
- 
-        const block = document.createElement('div');
-        block.className = "min-w-[120px] max-w-[120px] cursor-pointer group";
-        block.onclick = () => openDetailsModal(id);
-        block.innerHTML = `
-          <div class="h-20 rounded-2xl overflow-hidden bg-luxury-100 mb-1.5 border border-luxury-100">
-            <img src="${design.images[0]}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
-          </div>
-          <span class="text-[10px] text-luxury-900 block truncate font-bold leading-tight">${design.title}</span>
-          <span class="text-[8px] text-luxury-400 uppercase tracking-widest block">${design.category}</span>
-        `;
-        container.appendChild(block);
-      });
-    }
-      /* ==========================================================
-       11. MOBILE DRAWER NAVIGATION UX
-       ========================================================== */
-    const mDrawer = document.getElementById('mobile-drawer');
-    const mOpenBtn = document.getElementById('mobile-menu-btn');
-    const mCloseBtn = document.getElementById('mobile-close-btn');
- 
-    if (mOpenBtn) {
-      mOpenBtn.onclick = () => {
-        mDrawer.classList.remove('translate-x-full');
-      };
-    }
-    if (mCloseBtn) {
-      mCloseBtn.onclick = () => closeMobileDrawer();
-    }
-    window.closeMobileDrawer = function() {
-      mDrawer.classList.add('translate-x-full');
-    }
- 
-    /* ==========================================================
-       12. SECURED ADMIN DIALOG CONTROLLERS (WITH ADVANCED IMAGE CROPPING)
-       ========================================================== */
-    window.showAdminLogin = function() {
-      closeMobileDrawer();
-      toggleAdminModal(true);
-    }
- 
-    window.toggleAdminModal = function(show) {
-      const modal = document.getElementById('admin-modal');
-      if (!modal) return;
-      modal.classList.toggle('hidden', !show);
-      
-      if (show) {
-        // Evaluate auth credentials
-        const currentAdmin = auth ? auth.currentUser : null;
-        const loggedIn = (currentAdmin && currentAdmin.email && currentAdmin.email.endsWith('@svwoodworks.com')) || (!isFirebaseConfigured && sessionStorage.getItem('demo_admin_logged') === 'true');
- 
-        if (loggedIn) {
-          document.getElementById('admin-login-view').classList.add('hidden');
-          document.getElementById('admin-dashboard-view').classList.remove('hidden');
-          setAdminTab('add-design');
-        } else {
-          document.getElementById('admin-login-view').classList.remove('hidden');
-          document.getElementById('admin-dashboard-view').classList.add('hidden');
-        }
-      }
-    }
- 
-    // Handles login submission
-    window.handleAdminLogin = async function(event) {
-      event.preventDefault();
-      const email = document.getElementById('admin-email').value;
-      const pass = document.getElementById('admin-password').value;
- 
-      if (isFirebaseConfigured) {
-        try {
-          if (!email.endsWith('@svwoodworks.com')) {
-            showToast("Only verified official admin credentials allowed!", "error");
-            return;
-          }
-          await signInWithEmailAndPassword(auth, email, pass);
-          showToast("Authorized session initiated!", "success");
-          toggleAdminModal(true);
-        } catch (err) {
-          console.error(err);
-          showToast("Invalid credentials entered. Try again.", "error");
-        }
-      } else {
-        // Fallback simulated sandbox authentication
-        if (email === 'admin@svwoodworks.com' && pass === 'admin123') {
-          sessionStorage.setItem('demo_admin_logged', 'true');
-          showToast("Simulated admin session established (Sandbox)", "success");
-          toggleAdminModal(true);
-        } else {
-          showToast("Invalid Credentials. Hint: admin@svwoodworks.com / admin123", "error");
-        }
-      }
-    }
- 
-    window.handleAdminLogout = async function() {
-      if (isFirebaseConfigured) {
-        await signOut(auth);
-      } else {
-        sessionStorage.removeItem('demo_admin_logged');
-      }
-      showToast("Administrator session terminated", "info");
-      toggleAdminModal(false);
-    }
- 
-    // Toggle specific admin workspace panels
-    window.setAdminTab = function(tabName) {
-      state.adminActiveTab = tabName;
-      // Style active menu options
-      const menus = ['add-design', 'banners', 'manage-categories', 'inbound-feedbacks', 'manage-designs'];
-      menus.forEach(menu => {
-        const btn = document.getElementById(`admin-menu-${menu}`);
-        if (!btn) return;
-        if (menu === tabName) {
-          btn.className = "w-full text-left px-4 py-3 rounded-xl bg-luxury-300/20 text-white flex items-center gap-2 font-bold";
-        } else {
-          btn.className = "w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 flex items-center gap-2 text-white/70";
-        }
-      });
- 
-      renderAdminWorkspacePanel();
-    }
- 
-    // RENDER VARIOUS CONTROL VIEWS IN ADMIN PORTAL
-    let adminUploadImageArray = []; // Store base64 strings of uploaded files
-    function renderAdminWorkspacePanel() {
-      const container = document.getElementById('admin-content-viewport');
-      if (!container) return;
-      container.innerHTML = '';
- 
-      if (state.adminActiveTab === 'add-design') {
-        container.innerHTML = `
-          <h3 class="font-serif text-xl font-bold text-luxury-900 mb-6">Publish New Furniture Model</h3>
-          <form id="admin-add-design-form" onsubmit="publishDesign(event)" class="space-y-4">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-luxury-400 mb-1">Title / Name</label>
-                <input type="text" id="add-title" required class="w-full px-4 py-2 bg-luxury-50 border border-luxury-100 rounded-xl focus:outline-none text-sm">
-              </div>
-              <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-luxury-400 mb-1">Category</label>
-                <select id="add-category" class="w-full px-4 py-2.5 bg-luxury-50 border border-luxury-100 rounded-xl focus:outline-none text-sm">
-                  ${state.categories.map(c => `<option value="${c}">${c}</option>`).join('')}
-                </select>
-              </div>
-            </div>
- <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-luxury-400 mb-1">Estimated Price Range (E.g. ₹60,000 - ₹90,000)</label>
-                <input type="text" id="add-price" required class="w-full px-4 py-2 bg-luxury-50 border border-luxury-100 rounded-xl focus:outline-none text-sm" placeholder="₹">
-              </div>
-              <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-luxury-400 mb-1">Display Group</label>
-                <select id="add-type" class="w-full px-4 py-2.5 bg-luxury-50 border border-luxury-100 rounded-xl focus:outline-none text-sm">
-                  <option value="our-designs">Our Designs (Actual Completed Projects)</option>
-                  <option value="inspirations">Inspirations (Reference Catalogs)</option>
-                </select>
-              </div>
-            </div>
- 
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-luxury-400 mb-1">Product Description</label>
-              <textarea id="add-description" rows="3" required class="w-full px-4 py-2 bg-luxury-50 border border-luxury-100 rounded-xl focus:outline-none text-sm" placeholder="Detail wood type, finish and specifications..."></textarea>
-            </div>
- 
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-luxury-400 mb-1">Tags (Comma-separated parameters)</label>
-              <input type="text" id="add-tags" class="w-full px-4 py-2 bg-luxury-50 border border-luxury-100 rounded-xl focus:outline-none text-sm" placeholder="solid-teak, modular, lacquer-finish">
-            </div>
- 
-            <!-- Upload Zone -->
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-luxury-400 mb-1">Upload Product Images (Max 5, first is thumbnail)</label>
-              <div class="border-2 border-dashed border-luxury-200 p-4 rounded-2xl text-center bg-luxury-50 hover:bg-luxury-100 transition-colors cursor-pointer relative">
-                <input type="file" id="add-images" multiple accept="image/*" onchange="handleAdminFileSelect(event)" class="absolute inset-0 opacity-0 cursor-pointer">
-                <i data-lucide="upload-cloud" class="w-8 h-8 text-luxury-300 mx-auto mb-2"></i>
-                <p class="text-xs text-luxury-400">Click to import images. Supports canvas crop adjustments.</p>
-              </div>
-              <div id="add-image-previews" class="flex gap-2 mt-3 overflow-x-auto"></div>
-            </div>
- 
-            <button type="submit" class="w-full py-3.5 bg-luxury-900 text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-luxury-300 transition-all">Publish Live Design</button>
-          </form>
-        `;
-        adminUploadImageArray = [];
-        lucide.createIcons();
-      } 
-      
-      else if (state.adminActiveTab === 'banners') {
-        container.innerHTML = `
-          <h3 class="font-serif text-xl font-bold text-luxury-900 mb-2">Manage Hero Banners</h3>
-          <p class="text-xs text-luxury-400 mb-6">Modify up to 6 custom slider images on the homepage.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="border border-luxury-100 p-6 rounded-2xl bg-luxury-50">
-              <h4 class="font-bold text-xs uppercase tracking-wider text-luxury-900 mb-4">Add Slider Image</h4>
-              <form id="banner-form" onsubmit="uploadBannerSlide(event)" class="space-y-4">
-                <div>
-                  <label class="block text-xs text-luxury-400 mb-1">Desktop URL (16:9 recommended)</label>
-                  <input type="text" id="banner-desktop" required class="w-full px-4 py-2 border rounded-xl text-xs">
+            <div class="playlists-grid" id="playlists-grid"></div>
+
+            <!-- Playlist Detail View -->
+            <div class="playlist-detail hidden" id="playlist-detail">
+            <button class="btn-back" id="playlist-back-btn">
+                <i data-lucide="arrow-left"></i> Back
+            </button>
+            <div class="playlist-detail-header">
+                <div class="playlist-detail-cover" id="playlist-detail-cover">
+                <i data-lucide="list-music"></i>
                 </div>
                 <div>
-                  <label class="block text-xs text-luxury-400 mb-1">Mobile URL (Portrait recommended)</label>
-                  <input type="text" id="banner-mobile" class="w-full px-4 py-2 border rounded-xl text-xs" placeholder="Optional fallback">
+                <h2 id="playlist-detail-name"></h2>
+                <p id="playlist-detail-count"></p>
                 </div>
-                <button type="submit" class="w-full py-2.5 bg-luxury-900 text-white font-bold text-xs uppercase tracking-wider rounded-xl">Save Slide</button>
-              </form>
             </div>
-            
-            <div class="space-y-3">
-              <h4 class="font-bold text-xs uppercase tracking-wider text-luxury-900 mb-2">Active Slides</h4>
-              <div id="admin-banner-list" class="space-y-2">
-                ${state.banners.map((b, idx) => `
-                  <div class="flex items-center justify-between p-3 border rounded-xl bg-white text-xs">
-                    <span class="font-semibold text-luxury-900">Slide #${idx + 1}</span>
-                    <button onclick="removeBannerSlide('${b.id}')" class="text-red-500 hover:underline font-bold">Remove</button>
-                  </div>
-                `).join('')}
-              </div>
+            <div class="songs-grid" id="playlist-songs-grid"></div>
             </div>
-          </div>
-        `;
-      } 
- else if (state.adminActiveTab === 'manage-categories') {
-        container.innerHTML = `
-          <h3 class="font-serif text-xl font-bold text-luxury-900 mb-4">Manage Custom Categories</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <form onsubmit="addNewCategory(event)" class="space-y-3">
-                <label class="block text-xs font-bold uppercase tracking-wider text-luxury-400">Add Category Name</label>
-                <input type="text" id="new-category-inp" required class="w-full px-4 py-2 border rounded-xl text-sm">
-                <button type="submit" class="w-full py-2.5 bg-luxury-900 text-white font-bold text-xs uppercase tracking-wider rounded-xl">Publish Category</button>
-              </form>
+        </section>
+
+        <!-- Recently Played Section -->
+        <section class="content-section" id="section-recent">
+            <div class="section-header">
+            <h2>Recently Played</h2>
+            <button class="btn-sm btn-danger auth-only hidden" id="clear-recent-btn">
+                <i data-lucide="trash-2"></i> Clear History
+            </button>
             </div>
-            <div class="space-y-2">
-              <h4 class="text-xs font-bold uppercase text-luxury-400">Current Categories</h4>
-              <div class="flex flex-wrap gap-2">
-                ${state.categories.map(c => `
-                  <span class="bg-luxury-100 text-luxury-900 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border">
-                    ${c} <button onclick="deleteCategory('${c}')" class="text-red-500 text-xs hover:text-red-700 font-bold">×</button>
-                  </span>
-                `).join('')}
-              </div>
+            <div id="recent-empty" class="empty-state hidden">
+            <div class="empty-icon"><i data-lucide="clock"></i></div>
+            <h3>No history yet</h3>
+            <p>Songs you play will appear here</p>
             </div>
-          </div>
-        `;
-      } 
-      
-      else if (state.adminActiveTab === 'inbound-feedbacks') {
-        container.innerHTML = `
-          <h3 class="font-serif text-xl font-bold text-luxury-900 mb-4">Customer Reviews Inbox</h3>
-          <div class="space-y-4">
-            ${state.feedbacks.map(feed => `
-              <div class="p-5 border rounded-2xl bg-luxury-50 space-y-3">
-                <div class="flex items-center justify-between text-xs">
-                  <div>
-                    <span class="font-bold text-luxury-900 text-sm block">${feed.name}</span>
-                    <span class="text-luxury-400 font-mono">${feed.phone || 'No phone'}</span>
-                  </div>
-                  <span class="text-amber-500 font-bold">${feed.rating} / 5 Stars</span>
-                </div>
-                <p class="text-xs text-luxury-400 italic">"${feed.comment}"</p>
-                
-                ${feed.reply ? `
-                  <div class="p-3 bg-white border rounded-xl text-xs text-luxury-400">
-                    <span class="font-bold text-luxury-900">Your Reply:</span> ${feed.reply}
-                  </div>
-                ` : `
-                  <form onsubmit="submitFeedbackReply(event, '${feed.id}')" class="flex gap-2">
-                    <input type="text" placeholder="Type official response..." required class="flex-1 px-3 py-1.5 text-xs border rounded-xl focus:outline-none">
-                    <button type="submit" class="px-4 py-1.5 bg-luxury-900 text-white text-xs uppercase font-bold rounded-xl hover:bg-luxury-300">Reply</button>
-                  </form>
-                `}
-                
-                <div class="text-right">
-                  <button onclick="deleteFeedback('${feed.id}')" class="text-[10px] text-red-500 hover:underline">Delete Review</button>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        `;
-      } 
-      
-      else if (state.adminActiveTab === 'manage-designs') {
-        container.innerHTML = `
-          <h3 class="font-serif text-xl font-bold text-luxury-900 mb-4">Edit / Delete Active Furniture</h3>
-          <div class="grid grid-cols-1 gap-2">
-            ${state.designs.map(d => `
-              <div class="flex items-center justify-between p-3 border rounded-xl hover:bg-luxury-50 bg-white">
-                <div class="flex items-center gap-3">
-                  <img src="${d.images[0]}" alt="" class="w-12 h-10 object-cover rounded-md bg-luxury-100">
-                  <div>
-                    <h4 class="font-bold text-xs text-luxury-900">${d.title}</h4>
-                    <span class="text-[9px] text-luxury-400 uppercase font-semibold">${d.category} | ${d.priceRange}</span>
-                  </div>
-                </div>
-                <div class="flex items-center gap-3 text-xs">
-                  <button onclick="toggleTrendFlag('${d.id}')" class="font-bold ${d.mostLiked ? 'text-amber-500' : 'text-gray-400 hover:text-luxury-900'}">
-                    ${d.mostLiked ? '★ Trending' : '☆ Trend'}
-                  </button>
-                  <button onclick="deleteDesign('${d.id}')" class="text-red-500 font-bold hover:underline">Remove</button>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        `;
-      }
-    }
-  // INTERACTIVE CANVAS IMAGE FILE READER & CROP TRIGGER
-    window.handleAdminFileSelect = function(event) {
-      const files = Array.from(event.target.files);
-      if (!files.length) return;
- 
-      const queueNextCrop = (fileIdx) => {
-        if (fileIdx >= files.length) {
-          // Finished cropping
-          renderAdminAddedPreviews();
-          return;
-        }
- 
-        const file = files[fileIdx];
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          // Launch crop modal
-          triggerCropModal(e.target.result, (croppedBase64) => {
-            adminUploadImageArray.push(croppedBase64);
-            queueNextCrop(fileIdx + 1);
-          }, () => {
-            // Cancelled
-            queueNextCrop(fileIdx + 1);
-          });
-        };
-        reader.readAsDataURL(file);
-      };
- 
-      queueNextCrop(0);
-    }
- 
-    function renderAdminAddedPreviews() {
-      const container = document.getElementById('add-image-previews');
-      if (!container) return;
-      container.innerHTML = '';
-      
-      adminUploadImageArray.forEach((b64, idx) => {
-        const div = document.createElement('div');
-        div.className = "relative w-16 h-12 flex-shrink-0 border rounded-lg overflow-hidden";
-        div.innerHTML = `
-          <img src="${b64}" class="w-full h-full object-cover">
-          <button type="button" onclick="removeAdminPreviewImage(${idx})" class="absolute top-0 right-0 bg-red-500 text-white text-[8px] w-4 h-4 flex items-center justify-center font-bold">×</button>
-        `;
-        container.appendChild(div);
-      });
-    }
- 
-    window.removeAdminPreviewImage = function(index) {
-      adminUploadImageArray.splice(index, 1);
-      renderAdminAddedPreviews();
-    }
- 
-    // CANVAS MOCK CROPPER DRAWING FUNCTIONS
-    let cropImg = new Image();
-    let cropBox = { x: 50, y: 50, w: 200, h: 150 };
-    let cropDrag = false;
-    let cropDragStart = { x: 0, y: 0 };
-    let cropCancelCallback = null;
- 
-    function triggerCropModal(imageSrc, onComplete, onCancel) {
-      const modal = document.getElementById('cropper-modal');
-      const canvas = document.getElementById('crop-canvas');
-      if (!modal || !canvas) return;
- 
-      cropCancelCallback = onCancel;
-      modal.classList.remove('hidden');
- 
-      cropImg = new Image();
-      cropImg.onload = () => {
-        // Set Canvas dimensions maintaining aspect ratios
-        const ctx = canvas.getContext('2d');
-        const maxH = window.innerHeight * 0.6;
-        const maxW = window.innerWidth * 0.8;
- 
-        let w = cropImg.width;
-        let h = cropImg.height;
- 
-        if (w > maxW) {
-          h = h * (maxW / w);
-          w = maxW;
-        }
-        if (h > maxH) {
-          w = w * (maxH / h);
-          h = maxH;
-        }
- 
-        canvas.width = w;
-        canvas.height = h;
- 
-        // Reset Crop selector proportions
-        cropBox = { x: w * 0.1, y: h * 0.1, w: w * 0.8, h: h * 0.8 };
- 
-        // Bind interactive event listeners for canvas actions
-        canvas.onmousedown = startCropDrag;
-        canvas.onmousemove = moveCropDrag;
-        canvas.onmouseup = endCropDrag;
- 
-        canvas.ontouchstart = (e) => {
-          const t = e.touches[0];
-          const mockMouse = { clientX: t.clientX, clientY: t.clientY };
-          startCropDrag(mockMouse);
-        };
-        canvas.ontouchmove = (e) => {
-          const t = e.touches[0];
-          const mockMouse = { clientX: t.clientX, clientY: t.clientY };
-          moveCropDrag(mockMouse);
-        };
-        canvas.ontouchend = endCropDrag;
- 
-        state.cropCallback = onComplete;
-        drawCropFrame();
-      };
-      cropImg.src = imageSrc;
-    }
- 
-    function drawCropFrame() {
-      const canvas = document.getElementById('crop-canvas');
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(cropImg, 0, 0, canvas.width, canvas.height);
- 
-      // Darken unselected regions
-      ctx.fillStyle = "rgba(0,0,0,0.4)";
-      // Top
-      ctx.fillRect(0, 0, canvas.width, cropBox.y);
-      // Bottom
-      ctx.fillRect(0, cropBox.y + cropBox.h, canvas.width, canvas.height - (cropBox.y + cropBox.h));
-      // Left
-      ctx.fillRect(0, cropBox.y, cropBox.x, cropBox.h);
-      // Right
-      ctx.fillRect(cropBox.x + cropBox.w, cropBox.y, canvas.width - (cropBox.x + cropBox.w), cropBox.h);
- 
-      // Drawing guidelines box
-      ctx.strokeStyle = "#C5A880";
-      ctx.lineWidth = 2;
-      ctx.strokeRect(cropBox.x, cropBox.y, cropBox.w, cropBox.h);
-    }
- function startCropDrag(e) {
-      const canvas = document.getElementById('crop-canvas');
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
- 
-      // Check click inside cropBox
-      if (x >= cropBox.x && x <= cropBox.x + cropBox.w && y >= cropBox.y && y <= cropBox.y + cropBox.h) {
-        cropDrag = true;
-        cropDragStart = { x: x - cropBox.x, y: y - cropBox.y };
-      }
-    }
- 
-    function moveCropDrag(e) {
-      if (!cropDrag) return;
-      const canvas = document.getElementById('crop-canvas');
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
- 
-      let newX = x - cropDragStart.x;
-      let newY = y - cropDragStart.y;
- 
-      // Limit bounds boundaries
-      newX = Math.max(0, Math.min(newX, canvas.width - cropBox.w));
-      newY = Math.max(0, Math.min(newY, canvas.height - cropBox.h));
- 
-      cropBox.x = newX;
-      cropBox.y = newY;
-      drawCropFrame();
-    }
- 
-    function endCropDrag() {
-      cropDrag = false;
-    }
- 
-    window.cancelCrop = function() {
-      document.getElementById('cropper-modal').classList.add('hidden');
-      if (cropCancelCallback) cropCancelCallback();
-    }
- 
-    window.saveCroppedImage = function() {
-      const canvas = document.getElementById('crop-canvas');
-      const output = document.createElement('canvas');
-      
-      // Calculate original resolution map coordinates
-      const ratioX = cropImg.width / canvas.width;
-      const ratioY = cropImg.height / canvas.height;
- 
-      const targetX = cropBox.x * ratioX;
-      const targetY = cropBox.y * ratioY;
-      const targetW = cropBox.w * ratioX;
-      const targetH = cropBox.h * ratioY;
- 
-      output.width = targetW;
-      output.height = targetH;
-      const oCtx = output.getContext('2d');
-      oCtx.drawImage(cropImg, targetX, targetY, targetW, targetH, 0, 0, targetW, targetH);
- 
-      const croppedB64 = output.toDataURL('image/jpeg', 0.85);
-      document.getElementById('cropper-modal').classList.add('hidden');
-      if (state.cropCallback) state.cropCallback(croppedB64);
-    }
- 
-    // CRUD IMPLEMENTATION ACTIONS FOR DATABASE PERSISTENCE
-    window.publishDesign = async function(event) {
-      event.preventDefault();
-      const title = document.getElementById('add-title').value;
-      const category = document.getElementById('add-category').value;
-      const priceRange = document.getElementById('add-price').value;
-      const type = document.getElementById('add-type').value;
-      const description = document.getElementById('add-description').value;
-      const tagsInp = document.getElementById('add-tags').value;
- 
-      const tags = tagsInp ? tagsInp.split(',').map(t => t.trim().toLowerCase()) : [];
- 
-      if (!adminUploadImageArray.length) {
-        // Fallback placeholder image
-        adminUploadImageArray.push("https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=800&auto=format&fit=crop");
-      }
- 
-      const designObj = {
-        title,
-        category,
-        priceRange,
-        type,
-        description,
-        tags,
-        images: [...adminUploadImageArray],
-        likes: 0,
-        mostLiked: false,
-        timestamp: Date.now()
-      };
- 
-      if (isFirebaseConfigured) {
-        try {
-          const coll = collection(db, 'artifacts', appId, 'public', 'data', 'designs');
-          await addDoc(coll, designObj);
-          showToast("New design published to Firestore successfully!", "success");
-        } catch (err) {
-          console.error(err);
-          showToast("Error writing to database. Sandboxed.", "error");
-        }
-      } else {
-        // Local state mutation for immediate testing feedback loop
-        designObj.id = `mock-${Date.now()}`;
-        state.designs.unshift(designObj);
-        renderDesignsGrid();
-        showToast("Design added to demo showcase catalog!", "success");
-      }
- 
-      setAdminTab('manage-designs');
-    }
-   // DELETE DESIGN
-    window.deleteDesign = async function(id) {
-      if (!confirm("Are you sure you want to delete this furniture item?")) return;
- 
-      if (isFirebaseConfigured) {
-        try {
-          const refDoc = doc(db, 'artifacts', appId, 'public', 'data', 'designs', id);
-          await deleteDoc(refDoc);
-          showToast("Design deleted from Firestore successfully", "info");
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        state.designs = state.designs.filter(d => d.id !== id);
-        renderDesignsGrid();
-        renderTrendingCarousel();
-        showToast("Removed from local session memory", "info");
-      }
-      setAdminTab('manage-designs');
-    }
- 
-    // TOGGLE TRENDING FLAG
-    window.toggleTrendFlag = async function(id) {
-      const design = state.designs.find(d => d.id === id);
-      if (!design) return;
- 
-      design.mostLiked = !design.mostLiked;
- 
-      if (isFirebaseConfigured) {
-        try {
-          const refDoc = doc(db, 'artifacts', appId, 'public', 'data', 'designs', id);
-          await updateDoc(refDoc, { mostLiked: design.mostLiked });
-          showToast("Trending status updated", "success");
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        renderDesignsGrid();
-        renderTrendingCarousel();
-        showToast("Trending state modified", "success");
-      }
-      renderAdminWorkspacePanel();
-    }
- 
-    // MANAGE FEEDBACK RESPONSES
-    window.submitFeedbackReply = async function(event, feedId) {
-      event.preventDefault();
-      const inp = event.target.querySelector('input');
-      const reply = inp.value;
- 
-      const feed = state.feedbacks.find(f => f.id === feedId);
-      if (!feed) return;
- 
-      feed.reply = reply;
- 
-      if (isFirebaseConfigured) {
-        try {
-          const refDoc = doc(db, 'artifacts', appId, 'public', 'data', 'feedbacks', feedId);
-          await updateDoc(refDoc, { reply: reply });
-          showToast("Response published successfully!", "success");
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        renderFeedbackList();
-        showToast("Response recorded locally!", "success");
-      }
-      renderAdminWorkspacePanel();
-    }
- 
-    window.deleteFeedback = async function(feedId) {
-      if (!confirm("Remove this feedback permanently?")) return;
- 
-      if (isFirebaseConfigured) {
-        try {
-          const refDoc = doc(db, 'artifacts', appId, 'public', 'data', 'feedbacks', feedId);
-          await deleteDoc(refDoc);
-          showToast("Review deleted successfully", "info");
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        state.feedbacks = state.feedbacks.filter(f => f.id !== feedId);
-        renderFeedbackList();
-        showToast("Review deleted locally", "info");
-      }
-      renderAdminWorkspacePanel();
-    }
-    // MANAGE BANNERS
-    window.uploadBannerSlide = async function(event) {
-      event.preventDefault();
-      const dUrl = document.getElementById('banner-desktop').value;
-      const mUrl = document.getElementById('banner-mobile').value || dUrl;
- 
-      const newSlide = {
-        desktopUrl: dUrl,
-        mobileUrl: mUrl,
-        timestamp: Date.now()
-      };
- 
-      if (isFirebaseConfigured) {
-        try {
-          const coll = collection(db, 'artifacts', appId, 'public', 'data', 'banners');
-          await addDoc(coll, newSlide);
-          showToast("Slide added to live slider!", "success");
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        newSlide.id = `slide-${Date.now()}`;
-        state.banners.push(newSlide);
-        renderHeroBanners();
-        showToast("Banner slide loaded locally", "success");
-      }
-      setAdminTab('banners');
-    }
- 
-    window.removeBannerSlide = async function(slideId) {
-      if (!confirm("Are you sure you want to remove this banner?")) return;
- 
-      if (isFirebaseConfigured) {
-        try {
-          const refDoc = doc(db, 'artifacts', appId, 'public', 'data', 'banners', slideId);
-          await deleteDoc(refDoc);
-          showToast("Banner slide deleted", "info");
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        state.banners = state.banners.filter(b => b.id !== slideId);
-        renderHeroBanners();
-        showToast("Slide deleted locally", "info");
-      }
-      setAdminTab('banners');
-    }
- 
-    // ADD / DELETE CATEGORIES
-    window.addNewCategory = async function(event) {
-      event.preventDefault();
-      const name = document.getElementById('new-category-inp').value.trim();
-      if (!name) return;
- 
-      if (state.categories.includes(name)) {
-        showToast("Category exists already!", "info");
-        return;
-      }
- 
-      if (isFirebaseConfigured) {
-        try {
-          const coll = collection(db, 'artifacts', appId, 'public', 'data', 'categories');
-          await addDoc(coll, { name: name });
-          showToast("Category added successfully", "success");
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        state.categories.push(name);
-        renderCategoryChips();
-        showToast("Category added locally", "success");
-      }
-      setAdminTab('manage-categories');
-    }
- 
-    window.deleteCategory = async function(catName) {
-      if (!confirm(`Delete category "${catName}"?`)) return;
- 
-      if (isFirebaseConfigured) {
-        try {
-          // Locate category document references
-          const coll = collection(db, 'artifacts', appId, 'public', 'data', 'categories');
-          const q = query(coll, where("name", "==", catName));
-          const snap = await getDocs(q);
-          snap.forEach(async (doc) => {
-            await deleteDoc(doc.ref);
-          });
-          showToast("Category removed", "info");
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        state.categories = state.categories.filter(c => c !== catName);
-        renderCategoryChips();
-        showToast("Category removed locally", "info");
-      }
-      setAdminTab('manage-categories');
-    }
- 
- 
-    /* ==========================================================
-       13. INTERACTIVE TOUCH & SWIPE EVENTS HELPER MATH
-       ========================================================== */
-    function setupSwipeEvents(elementId, callback) {
-      const el = document.getElementById(elementId);
-      if (!el) return;
- 
-      let startX = 0;
-      let startY = 0;
- 
-      el.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-      }, { passive: true });
- 
-      el.addEventListener('touchend', (e) => {
-        const diffX = e.changedTouches[0].clientX - startX;
-        const diffY = e.changedTouches[0].clientY - startY;
- 
-        // Ensure vertical drag isn't hijacked as horizontal swipe
-        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
-          if (diffX > 0) {
-            callback(-1); // Swipe Right -> Show Previous
-          } else {
-            callback(1);  // Swipe Left -> Show Next
-          }
-        }
-      }, { passive: true });
-    }
-    /* ==========================================================
-       14. TOAST NOTIFICATION STYLES & CLIPPINGS
-       ========================================================== */
-    function showToast(message, type = "success") {
-      const container = document.getElementById('toast-wrapper');
-      if (!container) return;
- 
-      const toast = document.createElement('div');
-      toast.className = "flex items-center gap-2 p-4 rounded-2xl shadow-xl text-xs font-semibold uppercase tracking-wider text-white border transition-all duration-300 transform translate-y-12 opacity-0 pointer-events-auto max-w-sm";
-      
-      const themeColors = {
-        success: 'bg-luxury-900 border-luxury-300 text-luxury-100',
-        error: 'bg-red-900 border-red-500 text-red-100',
-        info: 'bg-luxury-800 border-luxury-400 text-luxury-100'
-      };
- 
-      toast.className += ` ${themeColors[type] || themeColors.success}`;
-      
-      let icon = "check-circle";
-      if (type === 'error') icon = "alert-circle";
-      if (type === 'info') icon = "info";
- 
-      toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 flex-shrink-0"></i> <span>${message}</span>`;
-      container.appendChild(toast);
-      lucide.createIcons();
- 
-      // Trigger animation
-      setTimeout(() => {
-        toast.classList.remove('translate-y-12', 'opacity-0');
-      }, 50);
- 
-      // Dismiss timer
-      setTimeout(() => {
-        toast.classList.add('opacity-0');
-        setTimeout(() => toast.remove(), 300);
-      }, 4000);
-    }
- 
-    // Scroll back to top smoothly
-    window.scrollToTop = function() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
- 
-    window.addEventListener('scroll', () => {
-      const topBtn = document.getElementById('back-to-top-btn');
-      if (topBtn) {
-        if (window.scrollY > 400) {
-          topBtn.classList.remove('translate-y-24', 'opacity-0');
-        } else {
-          topBtn.classList.add('translate-y-24', 'opacity-0');
-        }
-      }
-    });
- 
-    // DEVELOPER RULES PREVIEWS
-    window.toggleDeveloperPanel = function(show) {
-      const el = document.getElementById('dev-manual-modal');
-      if (el) el.classList.toggle('hidden', !show);
-    }
- 
-    window.copyToClipboard = function(elementId) {
-      const text = document.getElementById(elementId).innerText;
-      const temp = document.createElement('textarea');
-      document.body.appendChild(temp);
-      temp.value = text;
-      temp.select();
-      document.execCommand('copy');
-      document.body.removeChild(temp);
-      showToast("Rules copied to clipboard!", "success");
-    }
- 
-  </script>
-</body>
-</html>
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+            <div class="songs-grid" id="recent-grid"></div>
+        </section>
+
+        <!-- Upload Section -->
+        <section class="content-section auth-only" id="section-upload">
+            <div class="section-header">
+            <h2>Upload Music</h2>
+            </div>
+
+            <div class="upload-zone" id="upload-drop-zone">
+            <div class="upload-zone-inner">
+                <i data-lucide="upload-cloud"></i>
+                <p>Drag & drop MP3 files here</p>
+                <span>or</span>
+                <button class="btn-primary" id="upload-pick-btn">Browse Files</button>
+                <input type="file" id="upload-file-input" accept=".mp3,audio/mpeg" multiple hidden />
+            </div>
+            </div>
+
+            <!-- Queue of files to upload -->
+            <div id="upload-queue" class="upload-queue hidden"></div>
+        </section>
+
+        </main>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+        MODALS
+    ════════════════════════════════════════════ -->
+
+    <!-- Edit Song Modal -->
+    <div class="modal-overlay hidden" id="edit-modal">
+        <div class="modal">
+        <div class="modal-header">
+            <h3>Edit Song</h3>
+            <button class="btn-icon" id="edit-modal-close"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="edit-cover-preview" id="edit-cover-preview">
+            <img id="edit-cover-img" src="" alt="cover" />
+            <button class="edit-cover-btn" id="edit-cover-btn">
+                <i data-lucide="camera"></i>
+            </button>
+            <input type="file" id="edit-cover-input" accept="image/*" hidden />
+            </div>
+            <div class="form-group">
+            <label>Title *</label>
+            <input type="text" id="edit-title" placeholder="Song title" />
+            </div>
+            <div class="form-group">
+            <label>Artist</label>
+            <input type="text" id="edit-artist" placeholder="Artist name" />
+            </div>
+            <div class="form-group">
+            <label>Album</label>
+            <input type="text" id="edit-album" placeholder="Album name" />
+            </div>
+            <input type="hidden" id="edit-song-id" />
+        </div>
+        <div class="modal-footer">
+            <button class="btn-ghost" id="edit-cancel-btn">Cancel</button>
+            <button class="btn-primary" id="edit-save-btn">Save Changes</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- Create Playlist Modal -->
+    <div class="modal-overlay hidden" id="playlist-modal">
+        <div class="modal">
+        <div class="modal-header">
+            <h3>New Playlist</h3>
+            <button class="btn-icon" id="playlist-modal-close"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+            <label>Playlist Name *</label>
+            <input type="text" id="playlist-name-input" placeholder="My Playlist" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-ghost" id="playlist-cancel-btn">Cancel</button>
+            <button class="btn-primary" id="playlist-create-btn">Create</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- Add to Playlist Modal -->
+    <div class="modal-overlay hidden" id="add-to-playlist-modal">
+        <div class="modal">
+        <div class="modal-header">
+            <h3>Add to Playlist</h3>
+            <button class="btn-icon" id="add-playlist-modal-close"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <div id="add-playlist-list" class="playlist-picker"></div>
+            <p class="no-playlists-hint hidden" id="no-playlists-hint">
+            No playlists yet. Create one first.
+            </p>
+        </div>
+        <input type="hidden" id="add-to-playlist-song-id" />
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div class="modal-overlay hidden" id="delete-modal">
+        <div class="modal modal-sm">
+        <div class="modal-header">
+            <h3>Delete Song</h3>
+            <button class="btn-icon" id="delete-modal-close"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete <strong id="delete-song-name"></strong>? This cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-ghost" id="delete-cancel-btn">Cancel</button>
+            <button class="btn-danger" id="delete-confirm-btn">Delete</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+        MUSIC PLAYER (fixed bottom)
+    ════════════════════════════════════════════ -->
+    <div class="player hidden" id="player">
+        <!-- Progress Bar (clickable) -->
+        <div class="player-progress-wrap" id="player-progress-wrap">
+        <div class="player-progress-bar" id="player-progress-bar">
+            <div class="player-progress-fill" id="player-progress-fill"></div>
+            <div class="player-progress-handle" id="player-progress-handle"></div>
+        </div>
+        </div>
+
+        <div class="player-inner">
+        <!-- Now Playing Info -->
+        <div class="player-info">
+            <div class="player-cover" id="player-cover">
+            <img id="player-cover-img" src="" alt="cover" />
+            <div class="player-cover-placeholder"><i data-lucide="music"></i></div>
+            </div>
+            <div class="player-meta">
+            <span class="player-title" id="player-title">No song selected</span>
+            <span class="player-artist" id="player-artist">—</span>
+            </div>
+            <button class="btn-icon player-fav-btn" id="player-fav-btn" title="Favorite">
+            <i data-lucide="heart"></i>
+            </button>
+        </div>
+
+        <!-- Controls -->
+        <div class="player-controls">
+            <button class="btn-icon ctrl-btn" id="shuffle-btn" title="Shuffle">
+            <i data-lucide="shuffle"></i>
+            </button>
+            <button class="btn-icon ctrl-btn" id="prev-btn" title="Previous">
+            <i data-lucide="skip-back"></i>
+            </button>
+            <button class="btn-icon ctrl-btn play-btn" id="play-btn" title="Play/Pause">
+            <i data-lucide="play"></i>
+            </button>
+            <button class="btn-icon ctrl-btn" id="next-btn" title="Next">
+            <i data-lucide="skip-forward"></i>
+            </button>
+            <button class="btn-icon ctrl-btn" id="repeat-btn" title="Repeat">
+            <i data-lucide="repeat"></i>
+            </button>
+        </div>
+
+        <!-- Time + Volume -->
+        <div class="player-extra">
+            <div class="player-time">
+            <span id="current-time">0:00</span>
+            <span class="time-sep">/</span>
+            <span id="duration">0:00</span>
+            </div>
+            <div class="player-volume">
+            <button class="btn-icon ctrl-btn" id="mute-btn" title="Mute">
+                <i data-lucide="volume-2"></i>
+            </button>
+            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" />
+            </div>
+        </div>
+        </div>
+
+        <!-- Hidden audio element -->
+        <audio id="audio-player"></audio>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+        TOAST CONTAINER
+    ════════════════════════════════════════════ -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ═══════════════════════════════════════════
+        LOADING SCREEN
+    ════════════════════════════════════════════ -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-logo">
+        <div class="loading-icon"><i data-lucide="radio"></i></div>
+        <span>CloudWave</span>
+        </div>
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+        FIREBASE SDK (compat v9 via CDN)
+    ════════════════════════════════════════════ -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
+    <script src="script.js"></script>
+    </body>
+    </html>
